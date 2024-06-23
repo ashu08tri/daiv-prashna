@@ -1,0 +1,11 @@
+.skew-bottom-right {
+    transform: skewY(2deg);
+    transform-origin: bottom right;
+  }
+
+  @media only screen and (max-width: 600px){
+    .skew-bottom-right {
+      transform: skewY(8deg);
+      transform-origin: bottom right;
+    }
+  }
