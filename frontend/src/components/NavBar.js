@@ -43,12 +43,12 @@ const Navbar = () => {
         <>
         <nav className="h-24 md:h-36 bg-custom-maroon p-4 border-b border-custom-yellow-dark">
             <div className="h-full container mx-auto flex justify-between items-center">
-                <div className='pt-4 flex justify-center w-full md:w-auto'>
+                <div className='flex justify-center w-full md:w-auto'>
                     <Link to="/" onClick={handleLinkClick}>
-                        <img src={logo} alt='logo' className='w-96 h-76'/>
+                        <img src={logo} alt='logo' className='w-40 md:w-56'/>
                     </Link>
                 </div>
-                <div className="h-full hidden md:flex items-center pr-32 space-x-4">
+                <div className="h-full hidden md:flex items-center space-x-4">
                     {links.map((link, i) =>
                         <Link to={link.url} key={i} className="text-white group py-16 hover:text-custom-yellow" onClick={handleLinkClick}>
                             <span className='border-e-2 pr-4 group-last:border-e-0 border-custom-yellow'>{link.title}</span>
@@ -80,8 +80,8 @@ const Navbar = () => {
                 {!token || token === 'undefined' ? <div className='hidden md:block relative'>
                     {login && <Login onClose={loginModal}/>}
                     {register && <Register onClose={registerModal} openLogin={loginModal}/>}
-                        <button className='px-5 py-2 bg-custom-yellow text-custom-ivory rounded-md mr-2' onClick={loginModal}>Login</button>
-                        <button className='px-5 py-2 bg-custom-yellow text-custom-ivory rounded-md' onClick={registerModal}>Register</button>
+                        <button className='px-5 py-2 bg-custom-yellow text-custom-ivory rounded-md mr-6' onClick={loginModal}>Login</button>
+                        <button className='px-5 py-2 bg-custom-yellow text-custom-ivory rounded-md mr-1' onClick={registerModal}>Register</button>
                     </div>: <></>}
                 <div className="md:hidden">
                     <button onClick={toggleMenu} className="text-white focus:outline-none">

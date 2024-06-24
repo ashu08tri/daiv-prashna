@@ -57,9 +57,8 @@ function Lineage() {
               <img src={img} alt="" />
             </motion.div>
 
-            <motion.div initial={{ y: -30, opacity: 0 }} whileInView={{ y: 0, opacity: 1, transition: { delay: .5, duration: .3, ease: 'easeIn'}}} viewport={{ once: true, amount: 'all' }} className="flex flex-col md:flex-row justify-center md:justify-evenly items-center mt-16 mb-6">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg" alt="" className="w-72 h-72" />
-              <p className="text-2xl text-custom-yellow font-semibold pt-3 md:p-0">Shri Alok Anand </p>
+            <motion.div initial={{ y: -30, opacity: 0 }} whileInView={{ y: 0, opacity: 1, transition: { delay: .5, duration: .3, ease: 'easeIn'}}} viewport={{ once: true, amount: 'all' }} className="text-center h-40 content-center" >
+              <p className="text-2xl text-custom-yellow font-semibold pt-3 md:p-0">Shri Alok Anand Tripathi</p>
             </motion.div>
 
           </div>

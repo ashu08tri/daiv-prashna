@@ -1,5 +1,5 @@
 import Bannerforwebsite from '../assets/images/Banner for website.png';
-import logo from '../assets/images/logo.png';
+import logo from '../assets/images/logo_bottom.png';
 
 function Example() {
   return (
@@ -8,8 +8,8 @@ function Example() {
         <img src={Bannerforwebsite} alt="Bannerforwebsite" className='w-3/4'/>
         </div>
 
-    <div className='text-center h-96 border-t'>
-        <img src={logo} alt='logo' className='h-96 w-full'/>
+    <div className='text-center flex items-center h-96 border-t'>
+        <img src={logo} alt='logo' className='h-[calc(700px)] w-full'/>
     </div>
     </div>
   )

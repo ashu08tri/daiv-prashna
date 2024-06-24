@@ -7,7 +7,7 @@ function Container({children}) {
     <motion.div 
     initial={{opacity: 0 , x: 100}}
     animate={{opacity: 1 , x: 0}}
-    exit={{opacity:0, x: -100}} className='flex justify-center break-all'>
+    exit={{opacity:0, x: -100}} className='flex justify-center'>
         {children}
     </motion.div>
   )

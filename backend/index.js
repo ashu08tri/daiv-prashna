@@ -123,7 +123,7 @@ app.post("/login", (req, res) => {
 
 const generateReceipt = () => {
     const timestamp = Date.now().toString();
-    const randomNum = crypto.randomBytes(3).toString('hex'); // Generates a 6 character hex string
+    const randomNum = crypto.randomBytes(3).toString('hex'); 
     return `receipt_${timestamp.slice(-4)}${randomNum.slice(0, 4)}`;
 };
 
@@ -138,7 +138,7 @@ app.post('/orders', async (req, res) => {
         const receipt = generateReceipt();
 
         const options = {
-            amount: totalAmount * 100, 
+            amount: Number(totalAmount * 100), 
             currency: "INR",
             receipt: receipt,
         };
@@ -234,10 +234,6 @@ function authenticateToken(req, res, next) {
         next();
     });
 }
-
-app.get('/url', (req,res)=>{
-    res.json(process.env.URL)
-})
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
