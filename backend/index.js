@@ -138,7 +138,7 @@ app.post('/orders', async (req, res) => {
         const receipt = generateReceipt();
 
         const options = {
-            amount: totalAmount * 100, 
+            amount: Number(totalAmount * 100), 
             currency: "INR",
             receipt: receipt,
         };
