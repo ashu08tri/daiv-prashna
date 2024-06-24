@@ -25,7 +25,7 @@ function Payment() {
         if (paymentID) {
             const fetchPaymentData = async () => {
                 try {
-                    const { data: paymentData } = await axios.get('http://localhost:4000/payment/' + paymentID);
+                    const { data: paymentData } = await axios.get('https://daiv-prashna.onrender.com/payment/' + paymentID);
                     setCurrency(paymentData.currency);
                     setPaid(paymentData.amount);
                     setMethod(paymentData.method);
@@ -40,7 +40,7 @@ function Payment() {
 
     const removeHandler = async (id) => {
         try {
-            let res = await axios.delete('http://localhost:4000/removeService/' + id, {
+            let res = await axios.delete('https://daiv-prashna.onrender.com/removeService/' + id, {
                 headers: {
                     authorization: "Bearer " + token,
                 }
@@ -59,7 +59,7 @@ function Payment() {
     useEffect(() => {
         const getData = async () => {
             try {
-                const res = await axios.get('http://localhost:4000/userData', {
+                const res = await axios.get('https://daiv-prashna.onrender.com/userData', {
                     headers: {
                         authorization: "Bearer " + token,
                     }
@@ -108,7 +108,7 @@ function Payment() {
         }
 
         try {
-            const result = await axios.post("http://localhost:4000/orders", {
+            const result = await axios.post("https://daiv-prashna.onrender.com/orders", {
                 totalAmount: totalAmount
             });
 
@@ -117,8 +117,8 @@ function Payment() {
                 return;
             }
 
-            let { data: key } = await axios.get("http://localhost:4000/getKey");
-            let { data: emailData } = await axios.get("http://localhost:4000/getEmailKeys");
+            let { data: key } = await axios.get("https://daiv-prashna.onrender.com/getKey");
+            let { data: emailData } = await axios.get("https://daiv-prashna.onrender.com/getEmailKeys");
 
             const { amount, id: order_id, currency, receipt } = result.data;
             setPayReceipt(receipt);
@@ -141,7 +141,7 @@ function Payment() {
                         razorpaySignature: response.razorpay_signature,
                     };
 
-                    const result = await axios.post("http://localhost:4000/success", data);
+                    const result = await axios.post("https://daiv-prashna.onrender.com/success", data);
 
                     alert(result.data.msg);
                     if (result.data.msg) {
@@ -158,7 +158,7 @@ function Payment() {
                                 console.log('FAILED...', error);
                             }
                         );
-                    await axios.delete('http://localhost:4000/deleteData', {
+                    await axios.delete('https://daiv-prashna.onrender.com/deleteData', {
                         headers: {
                             authorization: "Bearer " + token,
                         }
@@ -193,7 +193,7 @@ function Payment() {
     };
 
     const bookShraddha = async() => {
-        let { data: emailData } = await axios.get("http://localhost:4000/getEmailKeys");
+        let { data: emailData } = await axios.get("https://daiv-prashna.onrender.com/getEmailKeys");
         emailjs
         .sendForm(emailData.secrectID, emailData.templateID, form.current, {
             publicKey: emailData.publicKey,
@@ -206,7 +206,7 @@ function Payment() {
                 console.log('FAILED...', error);
             }
         );
-    await axios.delete('http://localhost:4000/deleteData', {
+    await axios.delete('https://daiv-prashna.onrender.com/deleteData', {
         headers: {
             authorization: "Bearer " + token,
         }
