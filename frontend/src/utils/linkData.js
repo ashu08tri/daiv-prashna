@@ -1,5 +1,6 @@
 import vastumodification from '../assets/images/vastu modification.png';
 import horoscope from '../assets/images/horoscope.png';
+import consultancy from '../assets/images/consultancy.png';
 import shraddha from '../assets/images/shraddha.png';
 import vastu from '../assets/images/vastu.png';
 import yoga from '../assets/images/yoga.png';
@@ -32,6 +33,9 @@ export const links = [
             {
                 img: horoscope,
                 alt: 'horoscope'
+            },{
+                img: consultancy,
+                alt: 'consultancy'
             }
         ]
     },
@@ -142,11 +146,11 @@ export const links = [
                 url: '/Shraddha#yearlyshraddha'
             },
             {
-                title: 'Quaterly Shraddha',
+                title: 'Shraddha at Gaya(Quaterly Shraddha)',
                 url: '/Shraddha#quaterlyshraddha'
             },
             {
-                title: 'Monthly shraddha',
+                title: 'Shraddha at Bhrama Kapal(Monthly shraddha)',
                 url: '/Shraddha#monthlyshraddha'
             }
             
