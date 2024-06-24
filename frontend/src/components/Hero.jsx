@@ -32,6 +32,7 @@ function Hero({onGetPath}) {
    
       <div className='h-[calc(50vh)] md:h-[calc(65vh)] flex flex-col items-center'>
         <div className='relative w-[calc(90vw)] hidden md:flex justify-evenly mt-16'>
+          <div>
           <div className='w-72 h-72 rounded-full overflow-hidden flex items-center justify-center' 
           onClick={() => {
             onGetPath('lineage')
@@ -39,6 +40,9 @@ function Hero({onGetPath}) {
           }}>
             <img src={lineage} alt="lineage" className='w-full'/>
           </div>
+          <p className='text-center text-custom-ivory font-semibold text-3xl py-2'>Lineage</p>
+          </div>
+          <div>
           <div className='w-72 h-72 rounded-full overflow-hidden flex items-center justify-center'
           onClick={() => {
             onGetPath('mission')
@@ -47,6 +51,9 @@ function Hero({onGetPath}) {
           >
             <img src={mission} alt="lineage" className='w-full'/>
           </div>
+          <p className='text-center text-custom-ivory font-semibold text-3xl py-2'>Mission</p>
+          </div>
+          <div>
           <div className='w-72 h-72 rounded-full bg-black overflow-hidden flex items-center justify-center'
           onClick={() => {
             onGetPath('sadanand')
@@ -55,6 +62,9 @@ function Hero({onGetPath}) {
           >
             <img src={sadanand} alt="lineage" className='w-full'/>
           </div>
+          <p className='text-center text-custom-ivory font-semibold text-3xl py-2'>Mysticism & Sadanand</p>
+          </div>
+          
         </div>
 
         <div className='w-[calc(90vw)] md:hidden mt-10 z-30 flex justify-center'>
@@ -69,6 +79,7 @@ function Hero({onGetPath}) {
               draggable={true}
               rtl={true}
             >
+              <div>
               <div className='w-72 h-72 mx-auto rounded-full overflow-hidden flex items-center justify-center'
               onClick={() => {
                 onGetPath('lineage')
@@ -76,6 +87,9 @@ function Hero({onGetPath}) {
               }}>
                 <img src={lineage} alt="lineage" className='w-full'/>
               </div>
+              <p className='text-center text-custom-ivory font-semibold text-2xl py-2'>Lineage</p>
+              </div>
+              <div>
               <div className='w-72 h-72 mx-auto rounded-full overflow-hidden flex items-center justify-center'
               onClick={() => {
                 onGetPath('mission')
@@ -83,6 +97,9 @@ function Hero({onGetPath}) {
               }}>
                 <img src={mission} alt="lineage" className='w-full'/>
               </div>
+              <p className='text-center text-custom-ivory font-semibold text-2xl py-2'>Mission</p>
+              </div>
+              <div>
               <div className='w-72 h-72 mx-auto rounded-full bg-black overflow-hidden flex items-center justify-center'
               onClick={() => {
                 onGetPath('sadanand')
@@ -90,11 +107,14 @@ function Hero({onGetPath}) {
               }}>
                 <img src={sadanand} alt="lineage" className='w-full'/>
               </div>
+              <p className='text-center text-custom-ivory font-semibold text-2xl py-2'>Mysticism & Sadanand</p>
+              </div>
+              
             </Carousel>
           </div>
         </div>
       </div>
-      <div className='flex justify-center items-center mb-12 gap-4'>
+      <div className='flex justify-center items-center mt-8 md:mb-6 md:mt-0 gap-4'>
         <img src={yogaLeft} alt=""  className='w-16 h-16'/>
         <img src={lotus} alt=""  className='w-20 h-20'/>
         <img src={yogaRight} alt=""  className='w-16 h-16'/>

@@ -52,7 +52,7 @@ const Navbar = () => {
                     {links.map((link, i) =>
                         <Link to={link.url} key={i} className="text-white group py-16 hover:text-custom-yellow" onClick={handleLinkClick}>
                             <span className='border-e-2 pr-4 group-last:border-e-0 border-custom-yellow'>{link.title}</span>
-                            <ul className='hidden group-hover:flex items-end absolute w-auto md:w-screen md:left-0 bg-custom-maroon p-2 mt-[calc(60px)] z-50'>
+                            <ul className='hidden group-hover:flex items-end absolute w-auto md:w-full md:left-0 bg-custom-maroon p-2 mt-[calc(60px)] z-50'>
                                 <div className='flex justify-end mr-4 gap-4 w-7/12'>
                                     {link.images.map((image,i) => 
                                      <img src={image.img} key={i} alt='nav_imgs' className='w-56 h-56 rounded-sm'/>
@@ -67,7 +67,7 @@ const Navbar = () => {
                         </Link>
                     )}
                 </div>
-                {token && <div className='hidden md:block relative pr-20'>
+                {token && token !== 'undefined' && <div className='hidden md:block relative pr-20'>
                     <button className='bg-custom-yellow text-white p-1 rounded-md' onClick={appointmentHandler}>
                         <span className="flex w-full bg-custom-maroon text-white p-3 rounded-md active:scale-95">
                             Book Appointment
@@ -77,12 +77,12 @@ const Navbar = () => {
                         {appointment && <ServiceList onClose={appointmentHandler} />}
                     </AnimatePresence>
                 </div>}
-                {!token && <div className='relative'>
+                {!token || token === 'undefined' ? <div className='hidden md:block relative'>
                     {login && <Login onClose={loginModal}/>}
-                    {register && <Register onClose={registerModal}/>}
+                    {register && <Register onClose={registerModal} openLogin={loginModal}/>}
                         <button className='px-5 py-2 bg-custom-yellow text-custom-ivory rounded-md mr-2' onClick={loginModal}>Login</button>
                         <button className='px-5 py-2 bg-custom-yellow text-custom-ivory rounded-md' onClick={registerModal}>Register</button>
-                    </div>}
+                    </div>: <></>}
                 <div className="md:hidden">
                     <button onClick={toggleMenu} className="text-white focus:outline-none">
                         <svg
@@ -104,21 +104,32 @@ const Navbar = () => {
             </div>
         </nav>
         <div className='flex justify-center'>
-        {isOpen && (
-            <div className="md:hidden flex flex-col gap-3 bg-custom-maroon p-4 border-b border-custom-yellow-dark w-[calc(90vw)]">
-                {links.map((link, i) =>
-                    <Link to={link.url} key={i} className="text-white group hover:text-custom-yellow pr-4 " onClick={toggleMenu}>
-                        {link.title}
-                        <ul className='hidden group-hover:flex flex-col absolute w-auto bg-custom-maroon p-2 z-50'>
-                            {link.additionalData.map((link, i) =>
-                                <Link to={link.url} onClick={toggleMenu} key={i} className="text-white hover:bg-custom-yellow rounded-sm border-maroon-50 p-2 ">{link.title}</Link>
-                            )}
-                        </ul>
-                    </Link>
-                )}
-            </div>
-        )}
+    {isOpen && (
+        <div className="md:hidden flex flex-col gap-3 bg-custom-maroon p-4 border-b border-custom-yellow-dark w-[calc(90vw)]">
+            {links.map((link, i) => (
+                <Link to={link.url} key={i} className="text-white group hover:text-custom-yellow pr-4 " onClick={toggleMenu}>
+                    {link.title}
+                    <ul className='hidden group-hover:flex flex-col absolute w-auto bg-custom-maroon p-2 z-50'>
+                        {link.additionalData.map((link, i) => (
+                            <Link to={link.url} onClick={toggleMenu} key={i} className="text-white hover:bg-custom-yellow rounded-sm border-maroon-50 p-2 ">
+                                {link.title}
+                            </Link>
+                        ))}
+                    </ul>
+                </Link>
+            ))}
+            {!token && (
+                <div className='flex flex-col gap-2 mt-4'>
+                    {login && <Login onClose={loginModal}/>}
+                    {register && <Register onClose={registerModal} openLogin={loginModal} />}
+                    <button className='px-5 py-2 bg-custom-yellow text-custom-ivory rounded-md' onClick={loginModal}>Login</button>
+                    <button className='px-5 py-2 bg-custom-yellow text-custom-ivory rounded-md' onClick={registerModal}>Register</button>
+                </div>
+            )}
         </div>
+    )}
+</div>
+
         </>
     );
 };
