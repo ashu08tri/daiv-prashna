@@ -43,7 +43,7 @@ function FormModal({ title, onClose, state, listClose,
             yogaType, vastuType, poojaType, astrologyType, shraddhaType,
             astroAmount, yogaAmount, vastuAmount, poojaAmount
         };
-        await axios.post('http://localhost:4000/userData', service, {
+        await axios.post('https://daiv-prashna.onrender.com/userData', service, {
             headers: {
                 authorization: "Bearer " + token,
             }
