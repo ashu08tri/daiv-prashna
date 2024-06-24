@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import emailjs from '@emailjs/browser';
 import axios from 'axios';
 import Container from '../components/Container';
-import logo from '../assets/images/logoPay.png';
+import logo from '../assets/images/logo.png';
 import SuccessPay from '../components/SuccessPay';
 import { getAuthToken } from '../utils/token';
 
@@ -27,7 +27,7 @@ function Payment() {
                 try {
                     const { data: paymentData } = await axios.get('https://daiv-prashna.onrender.com/payment/' + paymentID);
                     setCurrency(paymentData.currency);
-                    setPaid(paymentData.amount);
+                    setPaid(paymentData.amount/100);
                     setMethod(paymentData.method);
                 } catch (err) {
                     console.log(err);
