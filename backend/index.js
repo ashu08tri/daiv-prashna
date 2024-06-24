@@ -235,10 +235,6 @@ function authenticateToken(req, res, next) {
     });
 }
 
-app.get('/url', (req,res)=>{
-    res.json(process.env.URL)
-})
-
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
 })
