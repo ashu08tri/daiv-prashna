@@ -9,6 +9,7 @@ import { getAuthToken } from '../utils/token';
 function Payment() {
 
     const form = useRef();
+    const [loading, setLoading] = useState(false);
     const [services, setServices] = useState([]);
     const [payReceipt, setPayReceipt] = useState("");
     const [paymentID, setPaymentID] = useState("");
@@ -27,7 +28,7 @@ function Payment() {
                 try {
                     const { data: paymentData } = await axios.get('https://daiv-prashna.onrender.com/payment/' + paymentID);
                     setCurrency(paymentData.currency);
-                    setPaid(paymentData.amount/100);
+                    setPaid(paymentData.amount / 100);
                     setMethod(paymentData.method);
                 } catch (err) {
                     console.log(err);
@@ -100,6 +101,8 @@ function Payment() {
     }
 
     async function displayRazorpay() {
+
+        setLoading(true);
         const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
 
         if (!res) {
@@ -145,25 +148,26 @@ function Payment() {
 
                     alert(result.data.msg);
                     if (result.data.msg) {
-                       setTimeout(async() => {
-                        emailjs
-                        .sendForm(emailData.secrectID, emailData.templateID, form.current, {
-                            publicKey: emailData.publicKey,
-                        })
-                        .then(
-                            () => {
-                                console.log('SUCCESS!');
-                            },
-                            (error) => {
-                                console.log('FAILED...', error);
-                            }
-                        );
-                    await axios.delete('https://daiv-prashna.onrender.com/deleteData', {
-                        headers: {
-                            authorization: "Bearer " + token,
-                        }
-                    });
-                       },1000)
+                        setLoading(false);
+                        setTimeout(async () => {
+                            emailjs
+                                .sendForm(emailData.secrectID, emailData.templateID, form.current, {
+                                    publicKey: emailData.publicKey,
+                                })
+                                .then(
+                                    () => {
+                                        console.log('SUCCESS!');
+                                    },
+                                    (error) => {
+                                        console.log('FAILED...', error);
+                                    }
+                                );
+                            await axios.delete('https://daiv-prashna.onrender.com/deleteData', {
+                                headers: {
+                                    authorization: "Bearer " + token,
+                                }
+                            });
+                        }, 1000)
                         setTimeout(() => {
                             setReload(!reload);
                         }, 1000);
@@ -192,27 +196,27 @@ function Payment() {
         displayRazorpay();
     };
 
-    const bookShraddha = async() => {
+    const bookShraddha = async () => {
         let { data: emailData } = await axios.get("https://daiv-prashna.onrender.com/getEmailKeys");
         emailjs
-        .sendForm(emailData.secrectID, emailData.templateID, form.current, {
-            publicKey: emailData.publicKey,
-        })
-        .then(
-            () => {
-                console.log('SUCCESS!');
-            },
-            (error) => {
-                console.log('FAILED...', error);
+            .sendForm(emailData.secrectID, emailData.templateID, form.current, {
+                publicKey: emailData.publicKey,
+            })
+            .then(
+                () => {
+                    console.log('SUCCESS!');
+                },
+                (error) => {
+                    console.log('FAILED...', error);
+                }
+            );
+        await axios.delete('https://daiv-prashna.onrender.com/deleteData', {
+            headers: {
+                authorization: "Bearer " + token,
             }
-        );
-    await axios.delete('https://daiv-prashna.onrender.com/deleteData', {
-        headers: {
-            authorization: "Bearer " + token,
-        }
-    });setTimeout(() => {
-        setSreload(!reload);
-    }, 1000);
+        }); setTimeout(() => {
+            setSreload(!reload);
+        }, 1000);
     }
 
     return (
@@ -223,196 +227,196 @@ function Payment() {
                         {reload && <SuccessPay desc={'Thank you for completing your secure online payment.'} title={'Payment Done!'} />}
                     </div>
                     {token && services && services.length > 0 ? (
-    <div className="text-custom-maroon">
-        <h1 className="text-4xl font-semibold text-center pb-6 text-custom-maroon">Payment</h1>
-        <form ref={form} onSubmit={submitHandler} className="space-y-6">
-            <input type="email" name="user_email" value={services[0].email} className="hidden" readOnly required />
-            <input type="text" name="payReceipt" value={payReceipt} className="hidden" readOnly required />
-            <input type="text" name="paymentID" value={paymentID} className="hidden" readOnly required />
-            <input type="text" name="method" value={method} className="hidden" readOnly required />
-            <input type="text" name="currency" value={currency} className="hidden" readOnly required />
-            <input type="text" name="paid" value={paid} className="hidden" readOnly required />
-            {services.map((service, index) => (
-                <div key={index} className="border-b pb-6 mb-6">
-                    <h2 className="text-3xl font-bold py-4 text-custom-maroon bg-transparent pointer-events-none">{service.name}</h2>
-                    {service.poojaType && (
-                        <div className="block py-3">
-                            <div className='flex justify-between'>
-                                <h3 className="text-2xl font-semibold text-custom-maroon">Pooja Service</h3>
-                                <button type='button' className='px-4 py-1 bg-custom-maroon text-custom-ivory' onClick={() => removeHandler(service._id)}>X</button>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                                <input className="hidden text-3xl font-bold py-4 text-custom-maroon bg-transparent pointer-events-none" name="poojauser_name" value={service.name} readOnly />
-                                <div>
-                                    <label className="text-xl">Date:</label>
-                                    <input name="pooja_date" value={service.date.split('T')[0]} className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Reason:</label>
-                                    <input value={service.reason} name="reason" className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Service:</label>
-                                    <input value={service.poojaType} name="pooja_service" className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Amount:</label>
-                                    <input value={`${service.poojaAmount} ₹`} name="pooja_amount" className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                    
-                    {service.yogaType && (
-                        <div className="block py-3">
-                            <div className='flex justify-between'>
-                                <h3 className="text-2xl font-semibold text-custom-maroon">Yoga Service</h3>
-                                <button type='button' className='px-4 py-1 bg-custom-maroon text-custom-ivory' onClick={() => removeHandler(service._id)}>X</button>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                                <input className="hidden text-3xl font-bold py-4 text-custom-maroon bg-transparent pointer-events-none" name="yogauser_name" value={service.name} readOnly />
-                                <div>
-                                    <label className="text-xl">Date:</label>
-                                    <input value={service.date.split('T')[0]} name='yoga_date' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Gender:</label>
-                                    <input value={service.gender} name='yoga_gender' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Nationality:</label>
-                                    <input value={service.nationality} name='nationality' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Service:</label>
-                                    <input value={service.yogaType} name='yoga_service' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Amount:</label>
-                                    <input value={`${service.yogaAmount} ₹`} name='yoga_amount' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                        <div className="text-custom-maroon">
+                            <h1 className="text-4xl font-semibold text-center pb-6 text-custom-maroon">Payment</h1>
+                            <form ref={form} onSubmit={submitHandler} className="space-y-6">
+                                <input type="email" name="user_email" value={services[0].email} className="hidden" readOnly required />
+                                <input type="text" name="payReceipt" value={payReceipt} className="hidden" readOnly required />
+                                <input type="text" name="paymentID" value={paymentID} className="hidden" readOnly required />
+                                <input type="text" name="method" value={method} className="hidden" readOnly required />
+                                <input type="text" name="currency" value={currency} className="hidden" readOnly required />
+                                <input type="text" name="paid" value={paid} className="hidden" readOnly required />
+                                {services.map((service, index) => (
+                                    <div key={index} className="border-b pb-6 mb-6">
+                                        <h2 className="text-3xl font-bold py-4 text-custom-maroon bg-transparent pointer-events-none">{service.name}</h2>
+                                        {service.poojaType && (
+                                            <div className="block py-3">
+                                                <div className='flex justify-between'>
+                                                    <h3 className="text-2xl font-semibold text-custom-maroon">Pooja Service</h3>
+                                                    <button type='button' className='px-4 py-1 bg-custom-maroon text-custom-ivory' onClick={() => removeHandler(service._id)}>X</button>
+                                                </div>
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                                                    <input className="hidden text-3xl font-bold py-4 text-custom-maroon bg-transparent pointer-events-none" name="poojauser_name" value={service.name} readOnly />
+                                                    <div>
+                                                        <label className="text-xl">Date:</label>
+                                                        <input name="pooja_date" value={service.date.split('T')[0]} className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Reason:</label>
+                                                        <input value={service.reason} name="reason" className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Service:</label>
+                                                        <input value={service.poojaType} name="pooja_service" className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Amount:</label>
+                                                        <input value={`${service.poojaAmount} ₹`} name="pooja_amount" className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
 
-                    {service.vastuType && (
-                        <div className="block py-3">
-                            <div className='flex justify-between'>
-                                <h3 className="text-2xl font-semibold text-custom-maroon">Vastu Service</h3>
-                                <button type='button' className='px-4 py-1 bg-custom-maroon text-custom-ivory' onClick={() => removeHandler(service._id)}>X</button>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                                <input className="hidden text-3xl font-bold py-4 text-custom-maroon bg-transparent pointer-events-none" name="vastuuser_name" value={service.name} readOnly />
-                                <div>
-                                    <label className="text-xl">Date:</label>
-                                    <input value={service.date.split('T')[0]} name='vastu_date' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Organization:</label>
-                                    <input value={service.organization} name='organization' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Country:</label>
-                                    <input value={service.country} name='vastu_country' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Service:</label>
-                                    <input value={service.vastuType} name='vastu_service' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Amount:</label>
-                                    <input value={`${service.vastuAmount} ₹`} name='vastu_amount' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                                        {service.yogaType && (
+                                            <div className="block py-3">
+                                                <div className='flex justify-between'>
+                                                    <h3 className="text-2xl font-semibold text-custom-maroon">Yoga Service</h3>
+                                                    <button type='button' className='px-4 py-1 bg-custom-maroon text-custom-ivory' onClick={() => removeHandler(service._id)}>X</button>
+                                                </div>
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                                                    <input className="hidden text-3xl font-bold py-4 text-custom-maroon bg-transparent pointer-events-none" name="yogauser_name" value={service.name} readOnly />
+                                                    <div>
+                                                        <label className="text-xl">Date:</label>
+                                                        <input value={service.date.split('T')[0]} name='yoga_date' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Gender:</label>
+                                                        <input value={service.gender} name='yoga_gender' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Nationality:</label>
+                                                        <input value={service.nationality} name='nationality' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Service:</label>
+                                                        <input value={service.yogaType} name='yoga_service' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Amount:</label>
+                                                        <input value={`${service.yogaAmount} ₹`} name='yoga_amount' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
 
-                    {service.shraddhaType && (
-                        <div className="block py-3">
-                            <div className='flex justify-between'>
-                                <h3 className="text-2xl font-semibold text-custom-maroon">Shraddha Service</h3>
-                                <button type='button' className='px-4 py-1 bg-custom-maroon text-custom-ivory' onClick={() => removeHandler(service._id)}>X</button>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                                <input className="hidden text-3xl font-bold py-4 text-custom-maroon bg-transparent pointer-events-none" name="shraddhauser_name" value={service.name} readOnly />
-                                <div>
-                                    <label className="text-xl">Date:</label>
-                                    <input value={service.date.split('T')[0]} name='shraddha_date' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Time:</label>
-                                    <input value={service.time} name='shraddha_time' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Service:</label>
-                                    <input value={service.shraddhaType} name='shraddha_service' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                                        {service.vastuType && (
+                                            <div className="block py-3">
+                                                <div className='flex justify-between'>
+                                                    <h3 className="text-2xl font-semibold text-custom-maroon">Vastu Service</h3>
+                                                    <button type='button' className='px-4 py-1 bg-custom-maroon text-custom-ivory' onClick={() => removeHandler(service._id)}>X</button>
+                                                </div>
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                                                    <input className="hidden text-3xl font-bold py-4 text-custom-maroon bg-transparent pointer-events-none" name="vastuuser_name" value={service.name} readOnly />
+                                                    <div>
+                                                        <label className="text-xl">Date:</label>
+                                                        <input value={service.date.split('T')[0]} name='vastu_date' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Organization:</label>
+                                                        <input value={service.organization} name='organization' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Country:</label>
+                                                        <input value={service.country} name='vastu_country' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Service:</label>
+                                                        <input value={service.vastuType} name='vastu_service' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Amount:</label>
+                                                        <input value={`${service.vastuAmount} ₹`} name='vastu_amount' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
 
-                    {service.astrologyType && (
-                        <div className="block py-3">
-                            <div className='flex justify-between'>
-                                <h3 className="text-2xl font-semibold text-custom-maroon">Astrology Service</h3>
-                                <button type='button' className='px-4 py-1 bg-custom-maroon text-custom-ivory' onClick={() => removeHandler(service._id)}>X</button>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                                <input className="hidden text-3xl font-bold py-4 text-custom-maroon bg-transparent pointer-events-none" name="astrouser_name" value={service.name} readOnly />
-                                <div>
-                                    <label className="text-xl">DOB:</label>
-                                    <input value={service.date.split('T')[0]} name='astro_dob' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Time:</label>
-                                    <input value={service.time} name='astro_time' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Country:</label>
-                                    <input value={service.country} name='astro_country' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Gender:</label>
-                                    <input value={service.gender} name='astro_gender' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Place:</label>
-                                    <input value={service.place} name='place' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Service:</label>
-                                    <input value={service.astrologyType} name='astro_service' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Appointment On:</label>
-                                    <input value={service.appDate.split('T')[0]} name='astro_date' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                                <div>
-                                    <label className="text-xl">Amount:</label>
-                                    <input value={`${service.astroAmount} ₹`} name='astro_amount' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
-                                </div>
-                            </div>
+                                        {service.shraddhaType && (
+                                            <div className="block py-3">
+                                                <div className='flex justify-between'>
+                                                    <h3 className="text-2xl font-semibold text-custom-maroon">Shraddha Service</h3>
+                                                    <button type='button' className='px-4 py-1 bg-custom-maroon text-custom-ivory' onClick={() => removeHandler(service._id)}>X</button>
+                                                </div>
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                                                    <input className="hidden text-3xl font-bold py-4 text-custom-maroon bg-transparent pointer-events-none" name="shraddhauser_name" value={service.name} readOnly />
+                                                    <div>
+                                                        <label className="text-xl">Date:</label>
+                                                        <input value={service.date.split('T')[0]} name='shraddha_date' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Time:</label>
+                                                        <input value={service.time} name='shraddha_time' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Service:</label>
+                                                        <input value={service.shraddhaType} name='shraddha_service' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {service.astrologyType && (
+                                            <div className="block py-3">
+                                                <div className='flex justify-between'>
+                                                    <h3 className="text-2xl font-semibold text-custom-maroon">Astrology Service</h3>
+                                                    <button type='button' className='px-4 py-1 bg-custom-maroon text-custom-ivory' onClick={() => removeHandler(service._id)}>X</button>
+                                                </div>
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                                                    <input className="hidden text-3xl font-bold py-4 text-custom-maroon bg-transparent pointer-events-none" name="astrouser_name" value={service.name} readOnly />
+                                                    <div>
+                                                        <label className="text-xl">DOB:</label>
+                                                        <input value={service.date.split('T')[0]} name='astro_dob' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Time:</label>
+                                                        <input value={service.time} name='astro_time' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Country:</label>
+                                                        <input value={service.country} name='astro_country' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Gender:</label>
+                                                        <input value={service.gender} name='astro_gender' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Place:</label>
+                                                        <input value={service.place} name='place' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Service:</label>
+                                                        <input value={service.astrologyType} name='astro_service' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Appointment On:</label>
+                                                        <input value={service.appDate.split('T')[0]} name='astro_date' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xl">Amount:</label>
+                                                        <input value={`${service.astroAmount} ₹`} name='astro_amount' className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none" readOnly />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                                {services.every(service => service.shraddhaType) ? (
+                                    <>
+                                        {sreload && <SuccessPay desc={'Thank you for completing your secure online booking.'} title={'Booking Successful!'} />}
+                                        <button type='button' onClick={bookShraddha} className="w-full py-4 mt-4 text-xl font-semibold text-white bg-custom-yellow rounded-lg hover:bg-custom-yellow-dark transition-colors">
+                                            Book Service
+                                        </button>
+                                    </>
+                                ) : (
+                                    <button className="w-full py-4 mt-4 text-xl font-semibold text-white bg-custom-yellow rounded-lg hover:bg-custom-yellow-dark transition-colors" disabled={loading}>
+                                        {loading ? `Processing ₹${totalAmount} ...` : `Pay ₹${totalAmount}`}
+                                    </button>
+                                )}
+                            </form>
                         </div>
+                    ) : (
+                        <p className="text-3xl md:text-5xl text-center font-semibold text-custom-maroon mt-10">No Service Selected.</p>
                     )}
-                </div>
-            ))}
-            {services.every(service => service.shraddhaType) ? (
-                <>
-                {sreload && <SuccessPay desc={'Thank you for completing your secure online booking.'} title={'Booking Successful!'} />}
-                <button type='button' onClick={bookShraddha} className="w-full py-4 mt-4 text-xl font-semibold text-white bg-custom-yellow rounded-lg hover:bg-custom-yellow-dark transition-colors">
-                    Book Service
-                </button>
-                </>
-            ) : (
-                <button  className="w-full py-4 mt-4 text-xl font-semibold text-white bg-custom-yellow rounded-lg hover:bg-custom-yellow-dark transition-colors">
-                    Pay ₹{totalAmount}
-                </button>
-            )}
-        </form>
-    </div>
-) : (
-    <p className="text-3xl md:text-5xl text-center font-semibold text-custom-maroon mt-10">No Service Selected.</p>
-)}
 
                 </div>
             </div>
