@@ -44,9 +44,8 @@ app.use((req, res, next) => {
 app.post('/register',async (req, res) => {
 
     try {
-        const existedUser = await Customer.find({email: req.body.email});
-        if(existedUser) res.json({user: "User exist"}); 
-        else{
+       
+        
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const user = {
             email: req.body.email,
@@ -55,7 +54,7 @@ app.post('/register',async (req, res) => {
         const newUser = new Customer(user);
         await newUser.save();
         res.status(201).json({ ok: true });
-    }
+   
     } catch (err) {
         res.status(400).json("something went wrong! Check your input again", err);
     }
