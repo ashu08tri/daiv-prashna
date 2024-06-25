@@ -41,13 +41,14 @@ app.use((req, res, next) => {
     next();
 });
 
-app.post('/register',async (req, res) => {
-const existedUser = await Customer.find({email: req.body.email});
+app.post('/register', async (req, res) => {
     try {
+        const existedUser = await Customer.findOne({ email: req.body.email });
         
-        if(existedUser){ 
-            return res.json({user: "User exist"});
-        } 
+        if (existedUser) { 
+            return res.json({ user: "User exists" });
+        }
+
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const user = {
             email: req.body.email,
@@ -55,11 +56,13 @@ const existedUser = await Customer.find({email: req.body.email});
         };
         const newUser = new Customer(user);
         await newUser.save();
+        
         res.status(201).json({ ok: true });
     } catch (err) {
-        res.status(400).json("something went wrong! Check your input again", err);
+        res.status(400).json({ message: "Something went wrong! Check your input again", error: err });
     }
-})
+});
+
 
 app.get('/userData', authenticateToken ,async (req, res) => {
     try {
