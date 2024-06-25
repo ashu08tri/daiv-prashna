@@ -67,7 +67,8 @@ const Login = ({ onClose }) => {
     };
 
     return (
-        <div className={`w-72 ${styleValid ? 'h-72' : 'h-96'} bg-custom-ivory flex flex-col items-center absolute top-[calc(60%)] md:top-28 right-36 md:right-16 z-50 p-2 rounded-md border border-custom-maroon`}>
+        <div className='flex justify-center'>
+        <div className={`w-72 ${styleValid ? 'h-72' : 'h-96'} bg-custom-ivory flex flex-col items-center absolute top-[calc(60%)] md:top-28 md:right-16 z-50 p-2 rounded-md border border-custom-maroon`}>
             <div className='flex justify-between w-full'>
                 <h2 className='text-xl text-left py-4 pl-3'>Login:</h2>
                 <button className='pr-2' onClick={onClose}>X</button>
@@ -99,6 +100,7 @@ const Login = ({ onClose }) => {
                     {isLoading ? 'Logging in...' : 'Login'}
                 </button>
             </form>
+        </div>
         </div>
     );
 };
