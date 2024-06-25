@@ -41,12 +41,12 @@ app.use((req, res, next) => {
     next();
 });
 
-app.post('/register', async (req, res) => {
+app.post('/register',async (req, res) => {
+
     try {
-        const existingUser = await Customer.findOne({ email: req.body.email });
-        if (existingUser) {
-            return res.json({ user: 'User already exists' });
-        }
+        const existedUser = await Customer.find({email: req.body.email});
+        if(existedUser) res.json({user: "User exist"}); 
+        else{
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const user = {
             email: req.body.email,
@@ -55,10 +55,11 @@ app.post('/register', async (req, res) => {
         const newUser = new Customer(user);
         await newUser.save();
         res.status(201).json({ ok: true });
-    } catch (err) {
-        res.status(400).json({ ok: false, message: 'Something went wrong! Check your input again', error: err });
     }
-});
+    } catch (err) {
+        res.status(400).json("something went wrong! Check your input again", err);
+    }
+})
 
 app.get('/userData', authenticateToken ,async (req, res) => {
     try {
@@ -101,6 +102,23 @@ app.delete('/removeService/:id',authenticateToken , async (req, res) => {
 
 })
 
+app.get('/verifyToken/:token', async (req, res) => {
+    const { token } = req.params;
+
+    try {
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const user = await Customer.findOne({ token });
+
+        if (user) {
+            res.json({ ok: true, user });
+        } else {
+            res.status(404).json({ ok: false, message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(401).json({ ok: false, message: 'Invalid or expired token' });
+    }
+});
+
 app.post("/login", (req, res) => {
     const { email, password } = req.body;
     try {
@@ -111,23 +129,38 @@ app.post("/login", (req, res) => {
                         if (result) {
                             const user = { email };
                             const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-                            res.json({ accessToken, ok: true });
+                            
+                            // Save the token to the user's document in the database
+                            loggedUser.token = accessToken;
+                            loggedUser.save()
+                                .then(() => {
+                                    res.json({ accessToken, ok: true });
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                    res.status(500).json({ message: "Error saving token", ok: false });
+                                });
                         } else {
-                            res.json({ message: "email or password is incorrect!", status: 401, ok: false }).status(401);
+                            res.json({ message: "Email or password is incorrect!", status: 401, ok: false }).status(401);
                         }
                     });
                 } else {
                     res.status(404).json({ message: "No user found!" });
                 }
             })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({ message: "Error finding user", ok: false });
+            });
     } catch (e) {
-        console.log(e.message)
+        console.log(e.message);
+        res.status(500).json({ message: "Server error", ok: false });
     }
 });
 
 const generateReceipt = () => {
     const timestamp = Date.now().toString();
-    const randomNum = crypto.randomBytes(3).toString('hex'); // Generates a 6 character hex string
+    const randomNum = crypto.randomBytes(3).toString('hex'); 
     return `receipt_${timestamp.slice(-4)}${randomNum.slice(0, 4)}`;
 };
 
