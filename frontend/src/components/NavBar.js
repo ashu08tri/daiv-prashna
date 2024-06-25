@@ -7,13 +7,30 @@ import ServiceList from './ServiceList';
 import logo from '../assets/images/logo.png';
 import Login from './Login';
 import Register from './Register';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [login, setLogin] = useState(false);
     const [register, setRegister] = useState(false);
     const [appointment, setAppointment] = useState(false);
+    const [verifiedToken , setVToken] = useState('');
     const token = getAuthToken();
+    const navigate = useNavigate();
+
+    if(token){
+        const verifyToken = async() => {
+            try{
+                let res = await fetch('https://daiv-prashna.onrender.com/verifyToken/' + token)
+                res = await res.json();
+                setVToken(res.user.token)
+            }catch(err){
+                console.log(err);
+            }
+        }
+    
+        verifyToken();
+    }
 
     const appointmentHandler = () => {
         setAppointment(!appointment);
@@ -43,12 +60,12 @@ const Navbar = () => {
         <>
         <nav className="h-24 md:h-36 bg-custom-maroon p-4 border-b border-custom-yellow-dark">
             <div className="h-full container mx-auto flex justify-between items-center">
-                <div className='pt-4 flex justify-center w-full md:w-auto'>
+                <div className='flex justify-center w-full md:w-auto'>
                     <Link to="/" onClick={handleLinkClick}>
-                        <img src={logo} alt='logo' className='w-96 h-76'/>
+                        <img src={logo} alt='logo' className='w-40 md:w-56'/>
                     </Link>
                 </div>
-                <div className="h-full hidden md:flex items-center pr-32 space-x-4">
+                <div className="h-full hidden md:flex items-center space-x-4">
                     {links.map((link, i) =>
                         <Link to={link.url} key={i} className="text-white group py-16 hover:text-custom-yellow" onClick={handleLinkClick}>
                             <span className='border-e-2 pr-4 group-last:border-e-0 border-custom-yellow'>{link.title}</span>
@@ -67,7 +84,7 @@ const Navbar = () => {
                         </Link>
                     )}
                 </div>
-                {token && token !== 'undefined' && <div className='hidden md:block relative pr-20'>
+                {token===verifiedToken && token !== 'undefined' && <div className='hidden md:block relative pr-20'>
                     <button className='bg-custom-yellow text-white p-1 rounded-md' onClick={appointmentHandler}>
                         <span className="flex w-full bg-custom-maroon text-white p-3 rounded-md active:scale-95">
                             Book Appointment
@@ -80,8 +97,8 @@ const Navbar = () => {
                 {!token || token === 'undefined' ? <div className='hidden md:block relative'>
                     {login && <Login onClose={loginModal}/>}
                     {register && <Register onClose={registerModal} openLogin={loginModal}/>}
-                        <button className='px-5 py-2 bg-custom-yellow text-custom-ivory rounded-md mr-2' onClick={loginModal}>Login</button>
-                        <button className='px-5 py-2 bg-custom-yellow text-custom-ivory rounded-md' onClick={registerModal}>Register</button>
+                        <button className='px-5 py-2 bg-custom-yellow text-custom-ivory rounded-md mr-6' onClick={loginModal}>Login</button>
+                        <button className='px-5 py-2 bg-custom-yellow text-custom-ivory rounded-md mr-1' onClick={registerModal}>Register</button>
                     </div>: <></>}
                 <div className="md:hidden">
                     <button onClick={toggleMenu} className="text-white focus:outline-none">
@@ -118,14 +135,19 @@ const Navbar = () => {
                     </ul>
                 </Link>
             ))}
-            {!token && (
+            {!token ? (
                 <div className='flex flex-col gap-2 mt-4'>
                     {login && <Login onClose={loginModal}/>}
                     {register && <Register onClose={registerModal} openLogin={loginModal} />}
                     <button className='px-5 py-2 bg-custom-yellow text-custom-ivory rounded-md' onClick={loginModal}>Login</button>
                     <button className='px-5 py-2 bg-custom-yellow text-custom-ivory rounded-md' onClick={registerModal}>Register</button>
                 </div>
-            )}
+            ) : (<button className='px-5 py-2 bg-custom-yellow text-custom-ivory rounded-md' onClick={()=>{
+                localStorage.removeItem('token')
+                navigate('/')
+                }}>
+Logout
+            </button>)}
         </div>
     )}
 </div>
