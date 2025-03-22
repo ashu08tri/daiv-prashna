@@ -2,7 +2,7 @@ import { config } from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import nodemailer from "nodemailer";
-import bcrypt from "bcrypt";
+import bcrypt from 'bcryptjs';
 import bodyParser from "body-parser";
 import cors from 'cors';
 import jwt from "jsonwebtoken";
