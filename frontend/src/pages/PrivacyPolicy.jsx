@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Container from '../components/Container';
-import logo from '../assets/images/logo.png';
+import logo from '../assets/images/logo_bottom.png';
 
 function PrivacyPolicy() {
     const location = useLocation();
@@ -143,17 +143,17 @@ function PrivacyPolicy() {
                         <ul className='pl-10 text-custom-yellow break-normal list-disc'>
                             <li>80% refund up-to 3 days before the start date of class. No refunds thereafter. Please contact the in charge of the program within the time window to request for a refund. Certain programs do not allow a refund. See below</li>
                             <li>Refunds made for offline payments like cash will be made only through NEFT. Please allow upto 4 weeks for refund processing</li>
-                            <li>No refunds will be made for Thaimai program</li>
+                            <li>No refunds will be made after program start.</li>
                         </ul>
 
                         <p className='p-6 text-xl text-custom-yellow'>Re-Registration Policy for Yoga Programs:</p>
                         <ul className='pl-10 text-custom-yellow break-normal list-disc'>
                             <li>It may be possible to re-register for the same program at a later date if you are unable to attend the program you are registering for. A 15% re-registration fee is applicable.</li>
                             <li>You can register for the same class/program within 6 months of the originally registered program start date. If the program fee has increased, you will have to pay the difference in fee in addition to the re-registration fee.</li>
-                            <li>No re-registration is applicable for Thaimai program. Re-registration will also not be applicable if the program is not scheduled in the six month period</li>
+                            <li>Re-registration will also not be applicable if the program is not scheduled in the six month period</li>
                         </ul>
 
-                        <p className='p-6 text-xl text-custom-yellow'>REFUND, CANCELLATION, RESCHEDULE & TRANSFER POLICY FOR INNER ENGINEERING 7 STEPS WITH SADHGURU ( Online ):</p>
+                        <p className='p-6 text-xl text-custom-yellow'>REFUND, CANCELLATION, RESCHEDULE & TRANSFER POLICY:</p>
                         <p className='p-6 text-xl text-custom-yellow'>Refund Policy:</p>
                         <ul className='pl-10 text-custom-yellow break-normal list-disc'>
                             <li>Participants who have registered for the Program can apply for a refund only if they have NOT ACCESSED the course and within 30 days from the date of registration and payment. After 30 days from the date of registration and payment, and/or once you start the Inner Engineering Program, there is NO REFUND.</li>
@@ -164,20 +164,18 @@ function PrivacyPolicy() {
 
                         <p className='p-6 text-xl text-custom-yellow'>Reschedule Policy:</p>
                         <ul className='pl-10 text-custom-yellow break-normal list-disc'>
-                            <li>Please note that the reschedule policy is applicable only to Step 7, Transmission of Shambhavi and is subject to availability of Step 7 dates at the time of rescheduling.</li>
-                            <li>Participants will have either a total of 3 chances to reschedule their Step 7 dates, or 1 year from the date of registration to complete the program, whichever comes first.</li>
-                            <li>If you are unable to complete Step 7 Transmission of Shambhavi within 1 year from the date of registration, OR if you have exhausted all 3 reschedule chances, you will have to re-register by paying 50% of the current program fee without any special discount to reactivate your account.</li>
+                            <li>Participants will have either a total of 3 chances to reschedule selected service, or 1 year from the date of registration to complete the program, whichever comes first.</li>
                             <li>Once you reactivate your account by paying a 50% program fee, you will again have 1 year from the date of reactivation or 3 reschedule chances (whichever comes first) to complete the program.</li>
                             <li>You will start the program from the step you were on once the account is reactivated.</li>
                         </ul>
 
                         <p className='p-6 text-xl text-custom-yellow'>Transfer Policy:</p>
                         <ul className='pl-10 text-custom-yellow break-normal list-disc'>
-                            <li>You can transfer to any of the following Isha Yoga programs happening at the Isha Yoga Center, Coimbatore, India subject to availability of the seats only if you have NOT ACCESSED the Inner Engineering Program. You shall pay a transfer fee equivalent to 15% of the program fee (15% fee of the Program you are transferring to) and you shall also pay the difference in program fees, if any:
+                            <li>You can transfer to any of the following Daiv-Prashna Service happening at the time, subject to availability of the seats. You shall pay a transfer fee equivalent to 15% of the program fee (15% fee of the Program you are transferring to) and you shall also pay the difference in program fees, if any:
                                 <ul className='pl-10 text-custom-yellow break-normal list-disc'>
-                                    <li>Inner Engineering Retreat</li>
-                                    <li>Yogasanas</li>
-                                    <li>Surya Kriya</li>
+                                    <li>Astrology</li>
+                                    <li>Yoga</li>
+                                    <li>Vastu</li>
                                 </ul>
                             </li>
                             <li>For all transfers, the program is to be taken within one year from the date of original registration.</li>
@@ -185,20 +183,19 @@ function PrivacyPolicy() {
                             <li>The registration is non transferable to another person.</li>
                             <li>Participants who have registered for the Program using a gift coupon are not eligible for Transfer to another person or any other program.</li>
                             <li>We reserve the right to revise the terms and conditions of this Agreement at any time and at our sole discretion.</li>
-                            <li>For any further assistance, raise a support ticket through “this” portal.</li>
                         </ul>
 
-                        <p className='p-6 text-xl text-custom-yellow'>Refund policy for online donations & magazine subscriptions:</p>
+                        <p className='p-6 text-xl text-custom-yellow'>Refund policy for online donations:</p>
                         <ul className='pl-10 text-custom-yellow break-normal list-disc'>
                             <li>Donations and Subscriptions made online will not be refunded under any circumstances whatsoever.</li>
                         </ul>
 
-                        <p className='p-6 text-xl text-custom-yellow'>Refund and Cancellation Policy for Isha School of Hatha Yoga Upgrade Program:</p>
+                        <p className='p-6 text-xl text-custom-yellow'>Refund and Cancellation Policy for Daiv-Prashna Services:</p>
                         <ul className='pl-10 text-custom-yellow break-normal list-disc'>
                             <li>Please note that there will be no refund under any circumstances.</li>
                         </ul>
 
-                        <p className='p-6 text-xl text-custom-yellow'>Cancellation, Refund & Re-Registration Policy for Inner Engineering Completion Program (Teacher-led), Shoonya Intensive Program, Guru Pooja Training Program, Bhava Spandana, Hatha Yoga Programs, Samyama Sadhana Program & Inner Engineering Retreat Program:</p>
+                        <p className='p-6 text-xl text-custom-yellow'>Cancellation, Refund & Re-Registration Policy for Astrology, Yoga, Vastu, Vedic Pooja:</p>
                         <ul className='pl-10 text-custom-yellow break-normal list-disc'>
                             <li>You are eligible for an 80% refund of the program fee up to 3 days before the start date of the program you registered for. There will be no refund thereafter.</li>
                         </ul>

@@ -14,6 +14,9 @@ import Lineage from "./pages/Lineage";
 import Mission from "./pages/Mission";
 import Sadanand from "./pages/Sadanand";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import ContactUs from "./pages/ContactUs";
+import ReturnPage from './pages/ReturnPage';
+import ShippingPage from "./pages/ShippingPage";
 import Footer from './components/Footer';
 
 const App = () => {
@@ -35,6 +38,9 @@ const App = () => {
           <Route path="/mission" element={<Mission />} />
           <Route path="/sadanand" element={<Sadanand />} />
           <Route path="/privacy_policy" element={<PrivacyPolicy />} />
+          <Route path="/contact_us" element={<ContactUs />} />
+          <Route path="/return_refund" element={<ReturnPage />} />
+          <Route path="/shipping" element={<ShippingPage />} />
         </Routes>
       </AnimatePresence>
       <Footer />

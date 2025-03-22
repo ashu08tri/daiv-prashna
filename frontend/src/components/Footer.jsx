@@ -1,6 +1,17 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 
 function Footer() {
+
+  const navigate = useNavigate();
+
+  const scrollToFounder = () => {
+    navigate("/lineage");
+    setTimeout(() => {
+      document.getElementById("founder")?.scrollIntoView({ behavior: "smooth" });
+    }, 300);
+  };
+
   return (
     <footer className="bg-custom-maroon border-t border-custom-yellow-dark">
       <div className="mx-auto w-full max-w-screen-xl">
@@ -9,10 +20,11 @@ function Footer() {
             <h2 className="mb-6 text-sm text-custom-yellow uppercase font-bold">Help center</h2>
             <ul className="text-custom-ivory dark:text-custom-ivory font-medium">
               <li className="mb-4">
-                <a href="mailto:appointment@daiv-prashna.in" className="hover:underline">Contact Us</a>
-                <br />
-                <span className='font-normal py-2 text-gray-400'>appointment@daiv-prashna.in</span>
+                <a href="/contact_us" className="hover:underline">Contact Us</a>
               </li>
+              <button onClick={scrollToFounder} className="hover:underline">
+                Founder
+              </button>
             </ul>
           </div>
           <div>
@@ -23,6 +35,12 @@ function Footer() {
               </li>
               <li className="mb-4">
                 <a href="/privacy_policy#term" className="hover:underline">Terms &amp; Conditions</a>
+              </li>
+              <li className="mb-4">
+                <a href="/return_refund" className="hover:underline">Return &amp; Refund</a>
+              </li>
+              <li className="mb-4">
+                <a href="/shipping" className="hover:underline">Shipping Policy</a>
               </li>
             </ul>
           </div>
@@ -36,7 +54,7 @@ function Footer() {
               <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 8 19">
                 <path fillRule="evenodd" d="M6.135 3H8V0H6.135a4.147 4.147 0 0 0-4.142 4.142V6H0v3h2v9.938h3V9h2.021l.592-3H5V3.591A.6.6 0 0 1 5.592 3h.543Z" clipRule="evenodd" />
               </svg>
-              <span className="sr-only">Facebook page</span>
+              {/* <span className="sr-only">Facebook page</span> */}
             </a>
           </div>
         </div>

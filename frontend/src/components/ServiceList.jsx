@@ -1,18 +1,11 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import FormModal from './FormModal';
-import { useNavigate } from 'react-router-dom';
 
 function ServiceList({ onClose }) {
 
-    const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     const [title, setTitle] = useState('Yoga')
-
-    const logoutHandler = () => {
-        localStorage.removeItem('token')
-        navigate('/')
-    }
 
 
     const modalHandler = (e) => {
@@ -55,7 +48,6 @@ function ServiceList({ onClose }) {
                     <motion.li className='p-2 rounded-lg bg-custom-yellow cursor-pointer hover:bg-custom-yellow-dark' variants={itemListVarient} onClick={modalHandler}>Pooja Services</motion.li>
                     <motion.li className='p-2 rounded-lg bg-custom-yellow cursor-pointer hover:bg-custom-yellow-dark' variants={itemListVarient} onClick={modalHandler}>Astrology Consultancy</motion.li>
                     <motion.li className='p-2 rounded-lg bg-custom-yellow cursor-pointer hover:bg-custom-yellow-dark' variants={itemListVarient} onClick={modalHandler}>Corporate Consultancy</motion.li>
-                    <motion.li className='p-2 rounded-lg bg-custom-yellow cursor-pointer hover:bg-custom-yellow-dark' variants={itemListVarient} onClick={logoutHandler}>Log Out!</motion.li>
                 </motion.ul>
             </div>
 

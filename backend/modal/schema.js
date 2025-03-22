@@ -3,7 +3,8 @@ import { Schema } from "mongoose";
 
 const customerSchema = new Schema({
     email: {type: String, unique: true},
-    password: String
+    password: String,
+    token:  String 
 })
 
 export const Customer = mongoose.models.customers || mongoose.model('customers', customerSchema);
@@ -33,3 +34,4 @@ const serviceSchema = new Schema({
 });
 
 export const Service = mongoose.models.services || mongoose.model('services', serviceSchema);
+

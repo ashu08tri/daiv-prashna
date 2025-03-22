@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import axios from 'axios';
-import { getAuthToken } from '../utils/token';
 
 const today = new Date().toISOString().split('T')[0]
 
@@ -30,31 +28,28 @@ function FormModal({ title, onClose, state, listClose,
     const [poojaAmount, setPoojaAmount] = useState(0)
 
     const navigate = useNavigate()
-    const token = getAuthToken();
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        if (!token) {
-            alert('please login first!')
-        }
-        const service = {
-            name, place, reason, country, date, appDate,
+    
+        const service = [{
+            id: Math.floor(Math.random() * 1000),name, place, reason, country, date, appDate,
             time, gender, nationality, organization,
             yogaType, vastuType, poojaType, astrologyType, shraddhaType,
             astroAmount, yogaAmount, vastuAmount, poojaAmount
-        };
-        await axios.post('https://daiv-prashna.onrender.com/userData', service, {
-            headers: {
-                authorization: "Bearer " + token,
-            }
-        })
+        }];
+    
+        localStorage.setItem("userServiceData", JSON.stringify(service));
+    
         if (state) {
-            listClose(false)
+            listClose(false);
         }
+    
         setTimeout(() => {
-            navigate('/payment')
-        }, 700)
-    }
+            navigate("/payment");
+        }, 400);
+    };
+    
 
     useEffect(() => {
         updateVastuAmount(vastuType);
@@ -136,25 +131,25 @@ function FormModal({ title, onClose, state, listClose,
                 <div className='my-3'>
                     <form class="max-w-md mx-auto px-6 md:p-0 text-white" onSubmit={submitHandler}>
                         <div class="relative z-0 w-full mb-5 group">
-                            <input type="name" onChange={(e) => setName(e.target.value)} name="name" id="name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
-                            <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Name</label>
+                            <input type="name" onChange={(e) => setName(e.target.value)} name="name" id="name" class="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
+                            <label for="name" class="peer-focus:font-medium absolute text-sm text-white dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Name</label>
                         </div>
                         <div class={`grid ${title === 'Astrology Consultancy' ? 'md:grid-cols-3' : 'md:grid-cols-2'} place-items-center md:gap-6`}>
                             <div class="relative z-0 w-full mb-5 group">
-                                <input type="date" name="date" onChange={(e) => setDate(e.target.value)} min={title === 'Astrology Consultancy' ? '' : today} id="date" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
-                                <label for="date" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">{title === 'Astrology Consultancy' ? 'D.O.B' : 'Date'}</label>
+                                <input type="date" name="date" onChange={(e) => setDate(e.target.value)} min={title === 'Astrology Consultancy' ? '' : today} id="date" class="block py-2.5 px-0 w-full text-sm text-white-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
+                                <label for="date" class="peer-focus:font-medium absolute text-sm text-white dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">{title === 'Astrology Consultancy' ? 'D.O.B' : 'Date'}</label>
                             </div>
                             {
                                 title === "Astrology Consultancy" && <>
                                     <div class="relative z-0 w-full mb-5 group">
                                         <input type="text" name="astroAmount" className='hidden' value={astroAmount} />
-                                        <input type="time" onChange={(e) => setTime(e.target.value)} name="time" id="time" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
-                                        <label for="time" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Time</label>
+                                        <input type="time" onChange={(e) => setTime(e.target.value)} name="time" id="time" class="block py-2.5 px-0 w-full text-sm text-white-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
+                                        <label for="time" class="peer-focus:font-medium absolute text-sm text-w dark:text-w duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Time</label>
                                     </div>
 
                                     <div class="relative z-0 w-full mb-5 group">
-                                        <input type="date" name="date" onChange={(e) => setAppDate(e.target.value)} min={today} id="date" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
-                                        <label for="date" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Appointment Date</label>
+                                        <input type="date" name="date" onChange={(e) => setAppDate(e.target.value)} min={today} id="date" class="block py-2.5 px-0 w-full text-sm text-white-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
+                                        <label for="date" class="peer-focus:font-medium absolute text-sm text-white dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Appointment Date</label>
                                     </div>
 
                                 </>
@@ -163,8 +158,8 @@ function FormModal({ title, onClose, state, listClose,
                             {
                                 title === "Shraddha" &&
                                 <div class="relative z-0 w-full mb-5 group">
-                                    <input type="time" onChange={(e) => setTime(e.target.value)} name="time" id="time" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
-                                    <label for="time" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Time</label>
+                                    <input type="time" onChange={(e) => setTime(e.target.value)} name="time" id="time" class="block py-2.5 px-0 w-full text-sm text-white-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
+                                    <label for="time" class="peer-focus:font-medium absolute text-sm text-white dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Time</label>
                                 </div>
                             }
 
@@ -180,24 +175,24 @@ function FormModal({ title, onClose, state, listClose,
                                 title === 'Yoga' &&
                                 <div class="relative z-0 w-full mb-5 group">
                                     <input type="number" value={yogaAmount} className='hidden' />
-                                    <input type="text" onChange={(e) => setNationality(e.target.value)} name="nationality" id="nationality" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
-                                    <label for="nationality" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nationality</label>
+                                    <input type="text" onChange={(e) => setNationality(e.target.value)} name="nationality" id="nationality" class="block py-2.5 px-0 w-full text-sm text-white-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
+                                    <label for="nationality" class="peer-focus:font-medium absolute text-sm text-white dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nationality</label>
                                 </div>
                             }
                             {
                                 title === 'Pooja Services' &&
                                 <div class="relative z-0 w-full mb-5 group">
                                     <input type="number" value={poojaAmount} className='hidden' />
-                                    <input type="text" onChange={(e) => setReason(e.target.value)} name="reason" id="reason" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
-                                    <label for="reason" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Reason for Pooja</label>
+                                    <input type="text" onChange={(e) => setReason(e.target.value)} name="reason" id="reason" class="block py-2.5 px-0 w-full text-sm text-white-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
+                                    <label for="reason" class="peer-focus:font-medium absolute text-sm text-white dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Reason for Pooja</label>
                                 </div>
                             }
                             {
                                 title === 'Corporate Consultancy' &&
                                 <div class="relative z-0 w-full mb-5 group">
                                     <input type="number" value={vastuAmount} className='hidden' />
-                                    <input type="text" onChange={(e) => setOrganization(e.target.value)} name="organisation" id="organisation" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
-                                    <label for="organisation" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Organisation</label>
+                                    <input type="text" onChange={(e) => setOrganization(e.target.value)} name="organisation" id="organisation" class="block py-2.5 px-0 w-full text-sm text-white-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
+                                    <label for="organisation" class="peer-focus:font-medium absolute text-sm text-white dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Organisation</label>
                                 </div>
                             }
 
@@ -261,8 +256,8 @@ function FormModal({ title, onClose, state, listClose,
                                             </div>
                                         </div>
                                         <div class="relative mb-5 group">
-                                            <input type="text" onChange={(e) => setPlace(e.target.value)} name="place" id="place" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
-                                            <label for="place" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Place</label>
+                                            <input type="text" onChange={(e) => setPlace(e.target.value)} name="place" id="place" class="block py-2.5 px-0 w-full text-sm text-white-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-maroon-500 focus:outline-none focus:ring-0 focus:border-maroon-600 peer" placeholder=" " required />
+                                            <label for="place" class="peer-focus:font-medium absolute text-sm text-white dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-maroon-600 peer-focus:dark:text-maroon-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Place</label>
                                         </div>
                                     </div>
                                 }

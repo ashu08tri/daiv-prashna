@@ -1,11 +1,10 @@
 import { config } from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
-import Razorpay from "razorpay";
+import nodemailer from "nodemailer";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
 import cors from 'cors';
-import crypto from 'crypto';
 import jwt from "jsonwebtoken";
 
 import { Customer, Service } from "./modal/schema.js";
@@ -42,7 +41,11 @@ app.use((req, res, next) => {
 });
 
 app.post('/register',async (req, res) => {
+
     try {
+        const existedUser = await Customer.find({email: req.body.email});
+        if(existedUser) res.json({user: "User exist"}); 
+        else{
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const user = {
             email: req.body.email,
@@ -51,6 +54,7 @@ app.post('/register',async (req, res) => {
         const newUser = new Customer(user);
         await newUser.save();
         res.status(201).json({ ok: true });
+    }
     } catch (err) {
         res.status(400).json("something went wrong! Check your input again", err);
     }
@@ -76,7 +80,7 @@ app.post('/userData', authenticateToken, async (req, res) => {
     }
 });
 
-app.delete('/deleteData',authenticateToken , async (req, res) => {
+app.delete('/deleteData', async (req, res) => {
     try{
         await Service.deleteMany({email: req.user.email});
         res.json({ok:true})
@@ -86,7 +90,7 @@ app.delete('/deleteData',authenticateToken , async (req, res) => {
 
 })
 
-app.delete('/removeService/:id',authenticateToken , async (req, res) => {
+app.delete('/removeService/:id', async (req, res) => {
     const {id} = req.params;
     try{
         await Service.deleteOne({_id: id});
@@ -96,6 +100,23 @@ app.delete('/removeService/:id',authenticateToken , async (req, res) => {
     }
 
 })
+
+app.get('/verifyToken/:token', async (req, res) => {
+    const { token } = req.params;
+
+    try {
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const user = await Customer.findOne({ token });
+
+        if (user) {
+            res.json({ ok: true, user });
+        } else {
+            res.status(404).json({ ok: false, message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(401).json({ ok: false, message: 'Invalid or expired token' });
+    }
+});
 
 app.post("/login", (req, res) => {
     const { email, password } = req.body;
@@ -107,120 +128,68 @@ app.post("/login", (req, res) => {
                         if (result) {
                             const user = { email };
                             const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-                            res.json({ accessToken, ok: true });
+                            
+                            // Save the token to the user's document in the database
+                            loggedUser.token = accessToken;
+                            loggedUser.save()
+                                .then(() => {
+                                    res.json({ accessToken, ok: true });
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                    res.status(500).json({ message: "Error saving token", ok: false });
+                                });
                         } else {
-                            res.json({ message: "email or password is incorrect!", status: 401, ok: false }).status(401);
+                            res.json({ message: "Email or password is incorrect!", status: 401, ok: false }).status(401);
                         }
                     });
                 } else {
                     res.status(404).json({ message: "No user found!" });
                 }
             })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({ message: "Error finding user", ok: false });
+            });
     } catch (e) {
-        console.log(e.message)
+        console.log(e.message);
+        res.status(500).json({ message: "Server error", ok: false });
     }
 });
 
-const generateReceipt = () => {
-    const timestamp = Date.now().toString();
-    const randomNum = crypto.randomBytes(3).toString('hex'); 
-    return `receipt_${timestamp.slice(-4)}${randomNum.slice(0, 4)}`;
-};
-
-app.post('/orders', async (req, res) => {
-    const { totalAmount } = req.body;
+//email
+app.post('/send-email', async(req, res) => {
     try {
-        const instance = new Razorpay({
-            key_id: process.env.RAZOR_PAY_APIKEY,
-            key_secret: process.env.RAZOR_PAY_SECRET,
+        const { to, subject, text } = req.body;
+    
+        if (!to || !subject || !text) {
+          return res.json({ error: "Missing required fields" }, { status: 400 });
+        }
+    
+        // Configure the transporter
+        let transporter = nodemailer.createTransport({
+          service: "gmail", 
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS, 
+          },
         });
-
-        const receipt = generateReceipt();
-
-        const options = {
-            amount: Number(totalAmount * 100), 
-            currency: "INR",
-            receipt: receipt,
+    
+        let mailOptions = {
+          from: process.env.EMAIL_USER,
+          to,
+          subject,
+          text,
         };
-
-        const order = await instance.orders.create(options);
-
-        if (!order) return res.status(500).send("Some error occurred");
-
-        res.json(order);
-    } catch (error) {
-        console.error('Error creating order:', error);
-        res.status(500).send(error);
-    }
-});
-
-app.get('/getKey', (req, res) => {
-    res.json(process.env.RAZOR_PAY_APIKEY)
+    
+        let info = await transporter.sendMail(mailOptions);
+    
+        return res.json({ success: true, message: "Email sent", info });
+      } catch (error) {
+        console.error("Error sending email:", error);
+        return res.json({ error: "Internal server error" }, { status: 500 });
+      }
 })
-
-app.get('/getEmailKeys',(req,res) => {
-    const emailData = {
-        publicKey: process.env.EMAILJS_PUBLIC_KEY,
-        secrectID:  process.env.EMAILJS_SERVICE_ID,
-        templateID: process.env.EMAILJS_TEMPLATE_ID
-    }
-    res.json(emailData)
-})
-
-app.get('/payment/:id', async(req,res) => {
-    const {id} = req.params;
-    try{
-        const instance = new Razorpay({
-            key_id: process.env.RAZOR_PAY_APIKEY,
-            key_secret: process.env.RAZOR_PAY_SECRET,
-        });
-
-        const payment = await instance.payments.fetch(id);
-
-        if(!payment) res.status(500).json("Error at razorpay fetching!")
-
-            res.json({
-                method: payment.method,
-                amount: payment.amount,
-                currency: payment.currency
-            })
-
-    }catch(err){
-        res.status(501).send(err)
-    }
-})
-
-app.post("/success", async (req, res) => {
-    try {
-
-        const {
-            orderCreationId,
-            razorpayPaymentId,
-            razorpayOrderId,
-            razorpaySignature,
-        } = req.body;
-
-        const shasum = crypto.createHmac("sha256", process.env.RAZOR_PAY_SECRET);
-
-        shasum.update(`${orderCreationId}|${razorpayPaymentId}`);
-
-        const digest = shasum.digest("hex");
-
-        // comaparing our digest with the actual signature
-        if (digest !== razorpaySignature)
-            return res.status(400).json({ msg: "Transaction not legit!" });
-
-
-        res.json({
-            msg: "success",
-            orderId: razorpayOrderId,
-            paymentId: razorpayPaymentId,
-        });
-
-    } catch (error) {
-        res.status(500).send(error);
-    }
-});
 
 function authenticateToken(req, res, next) {
     const authHeader = req.headers["authorization"];
