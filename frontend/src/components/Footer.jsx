@@ -2,14 +2,20 @@ import React from 'react';
 import { useNavigate } from "react-router-dom";
 
 function Footer() {
-
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const scrollToFounder = () => {
     navigate("/lineage");
     setTimeout(() => {
       document.getElementById("founder")?.scrollIntoView({ behavior: "smooth" });
     }, 300);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    window.location.reload();
   };
 
   return (
@@ -19,12 +25,21 @@ function Footer() {
           <div>
             <h2 className="mb-6 text-sm text-custom-yellow uppercase font-bold">Help center</h2>
             <ul className="text-custom-ivory dark:text-custom-ivory font-medium">
-              <li className="mb-4">
+              <li>
                 <a href="/contact_us" className="hover:underline">Contact Us</a>
               </li>
               <button onClick={scrollToFounder} className="hover:underline">
                 Founder
               </button>
+              <li className="mb-4">
+                {token ? (
+                  <button onClick={handleLogout} className="hover:underline text-red-500">
+                    Logout
+                  </button>
+                ) : (
+                  <a href="/admin-login" className="hover:underline">Admin</a>
+                )}
+              </li>
             </ul>
           </div>
           <div>
