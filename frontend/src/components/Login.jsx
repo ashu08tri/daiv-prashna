@@ -47,12 +47,17 @@ const Login = ({ onClose }) => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
                 });
+
                 const data = await response.json();
 
                 if (data.ok) {
-                    alert('User logged In Successfully!');
                     const token = data.accessToken;
                     localStorage.setItem("token", token);
+
+                    // Decode JWT to extract the role
+                    const decodedToken = JSON.parse(atob(token.split('.')[1]));
+                    localStorage.setItem("role", decodedToken.role);  // Store role in localStorage
+
                     navigate('/');
                 } else {
                     alert(data.message);
@@ -67,41 +72,42 @@ const Login = ({ onClose }) => {
     };
 
     return (
-        <div className='flex justify-center'>
-        <div className={`w-72 ${styleValid ? 'h-72' : 'h-96'} bg-custom-ivory flex flex-col items-center absolute top-[calc(60%)] md:top-28 md:right-16 z-50 p-2 rounded-md border border-custom-maroon`}>
-            <div className='flex justify-between w-full'>
-                <h2 className='text-xl text-left py-4 pl-3'>Login:</h2>
-                <button className='pr-2' onClick={onClose}>X</button>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
+            <div className={`w-80 ${styleValid ? 'h-72' : 'h-96'} bg-custom-ivory flex flex-col items-center relative shadow-lg p-6 rounded-lg border border-custom-maroon`}>
+                <div className="flex justify-between items-center w-full">
+                    <h2 className="text-2xl font-semibold text-custom-maroon">Login</h2>
+                    {/* <button className="text-gray-600 hover:text-gray-900" onClick={onClose}>&times;</button> */}
+                </div>
+                <form onSubmit={handleLogin} className="w-full">
+                    <div className="my-3 flex flex-col">
+                        <label className="font-medium">Email:</label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-custom-maroon"
+                        />
+                        {emailError && <span className="text-sm text-red-600 mt-1">{emailError}</span>}
+                    </div>
+                    <div className="my-3 flex flex-col">
+                        <label className="font-medium">Password:</label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-custom-maroon"
+                        />
+                        {passwordError && <span className="text-sm text-red-600 mt-1">{passwordError}</span>}
+                    </div>
+                    <button type="submit" className="w-full bg-custom-maroon text-custom-ivory px-4 py-2 rounded-md font-medium hover:bg-opacity-90 transition" disabled={isLoading}>
+                        {isLoading ? 'Logging in...' : 'Login'}
+                    </button>
+                </form>
             </div>
-            <form onSubmit={handleLogin}>
-                <div className='my-2 flex flex-col'>
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        className='px-3 py-1 rounded-md'
-                    />
-                    {emailError && <span className='p-4 text-red-600'>{emailError}</span>}
-                </div>
-                <div className='my-2 flex flex-col'>
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        className='px-3 py-1 rounded-md'
-                    />
-                    {passwordError && <span className='p-4 text-red-600'>{passwordError}</span>}
-                </div>
-                <button type="submit" className='bg-custom-maroon px-3 py-1 text-custom-ivory rounded-sm' disabled={isLoading}>
-                    {isLoading ? 'Logging in...' : 'Login'}
-                </button>
-            </form>
         </div>
-        </div>
+
     );
 };
 

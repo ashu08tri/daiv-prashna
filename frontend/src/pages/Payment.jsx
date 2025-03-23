@@ -307,7 +307,7 @@ function Payment() {
             </div>
             {emailSent && (
                 <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
-                    <div className="bg-white rounded-2xl shadow-lg p-6 max-w-md text-center relative">
+                    <div className="bg-white rounded-2xl shadow-lg p-6 max-w-lg text-center relative">
                         <button
                             onClick={() => setEmailSent(false)}
                             className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl"
@@ -318,8 +318,13 @@ function Payment() {
                             Payment Email Sent
                         </h2>
                         <p className="text-gray-700 text-lg">
-                            An email regarding your payment has been sent to your inbox.
-                            Please check your email for more information.
+                        Thank you for booking a service with Daiv-Prashna. Please check your email and WhatsApp for the payment details. Your booking will be confirmed once we receive your payment.
+                        </p>
+                        <p className="text-gray-700 text-lg py-4">
+                        दैवप्रश्न के साथ एक सेवा बुक करने के लिए धन्यवाद। कृपया भुगतान विवरण के लिए अपने ईमेल और व्हाट्सएप की जाँच करें। आपके भुगतान प्राप्त होने के बाद आपकी बुकिंग की पुष्टि हो जाएगी।
+                        </p>
+                        <p className="text-gray-700 text-lg">
+                        दिव्यतायाः सह सेवां बुकं कृत्वा धन्यवादः। कृपया भुगतानविवरणार्थं कृपया स्वस्य ईमेलं व्हाट्सएप् च पश्यन्तु। भवतः भुगतानस्य प्राप्तेः अनन्तरं भवतः बुकिंगस्य पुष्टिः भविष्यति।
                         </p>
                     </div>
                 </div>

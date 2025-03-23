@@ -32,10 +32,10 @@ function Home() {
             <Carousal />
           </motion.div>
         </div>
-        <div className="bg-custom-yellow h-14 w-[calc(90vw)] skew-bottom-right">
+        <div className="bg-custom-yellow h-14 w-[90vw] skew-bottom-right">
 
         </div>
-        <div className="w-[calc(90vw)] bg-custom-ivory pt-5">
+        <div className="w-[90vw] bg-custom-ivory pt-5">
           <Example />
         </div>
       </motion.div>
