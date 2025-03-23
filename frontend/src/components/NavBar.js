@@ -96,12 +96,12 @@ const Navbar = () => {
         <>
             <nav className="h-24 md:h-36 bg-custom-maroon p-4 border-b border-custom-yellow-dark">
                 <div className="h-full container mx-auto flex justify-between items-center">
-                    <div className='flex justify-center w-full md:w-auto'>
+                    <div className='flex justify-center w-full md:w-2/12'>
                         <Link to="/" onClick={handleLinkClick}>
-                            <img src={logo} alt='logo' className='w-40 md:w-56'/>
+                            <img src={logo} alt='logo' className='w-40 md:w-full'/>
                         </Link>
                     </div>
-                    <div className="h-full hidden md:flex items-center space-x-4">
+                    <div className="h-full hidden md:flex justify-center items-center space-x-4 w-10/12">
                         {links.map((link, i) =>
                             <Link to={link.url} key={i} className="text-white group py-16 hover:text-custom-yellow" onClick={handleLinkClick}>
                                 <span className='border-e-2 pr-4 group-last:border-e-0 border-custom-yellow'>{link.title}</span>
@@ -126,7 +126,7 @@ const Navbar = () => {
                     </div>
 
                     {/* Book Appointment Section (UNCHANGED) */}
-                    <div className='hidden md:block relative pr-20'>
+                    <div className='hidden relative w-2/12 md:flex justify-center'>
                         <button className='bg-custom-yellow text-white p-1 rounded-md' onClick={appointmentHandler}>
                             <span className="flex w-full bg-custom-maroon text-white p-3 rounded-md active:scale-95">
                                 Book Appointment

@@ -1,12 +1,13 @@
 import React, { useRef, useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 import Container from '../components/Container';
 import logo from '../assets/images/logo.png';
 import SuccessPay from '../components/SuccessPay';
 
 
 function Payment() {
-
+    const navigate = useNavigate();
     const form = useRef();
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
@@ -130,7 +131,8 @@ function Payment() {
                         <div className="text-custom-maroon">
                             <h1 className="text-4xl font-semibold text-center pb-6 text-custom-maroon">Payment</h1>
                             <form ref={form} onSubmit={submitHandler} className="space-y-6">
-                                <input type="email" name="email" className="p-3 text-xl font-semibold w-full bg-gray-200" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                                <label htmlFor="email" className='text-xl'>Email:</label>
+                                <input type="email" name="email" placeholder='Please enter your email here!' className="p-3 text-xl font-semibold w-full bg-gray-200" value={email} onChange={(e) => setEmail(e.target.value)} required />
                                 {services.map((service, index) => (
                                     <div key={index} className="border-b pb-6 mb-6">
                                         <h2 className="text-3xl font-bold py-4 text-custom-maroon bg-transparent pointer-events-none">{service.name}</h2>
@@ -295,7 +297,7 @@ function Payment() {
                                         )}
                                     </div>
                                 ))}
-                                <button disabled={loading} className="w-full py-4 mt-4 text-xl font-semibold text-white bg-custom-yellow rounded-lg hover:bg-custom-yellow-dark transition-colors">{loading ? "Processing" : "Make Payment"}</button>
+                                <button disabled={loading} className="w-full py-4 mt-4 text-xl font-semibold text-white bg-custom-yellow rounded-lg hover:bg-custom-yellow-dark transition-colors">{loading ? "Processing" : "Proceed With Booking"}</button>
                             </form>
                         </div>
                     ) : (
@@ -309,7 +311,12 @@ function Payment() {
                 <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
                     <div className="bg-white rounded-2xl shadow-lg p-6 max-w-lg text-center relative">
                         <button
-                            onClick={() => setEmailSent(false)}
+                            onClick={() => {
+                                setServices([]);
+                                setTimeout(() => {
+                                    navigate('/')
+                                }, 5000)
+                            }}
                             className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl"
                         >
                             &times;

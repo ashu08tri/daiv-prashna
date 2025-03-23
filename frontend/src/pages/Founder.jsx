@@ -5,7 +5,7 @@ export default function FoundersPage() {
           <h1 className="text-4xl font-bold mb-8">Chairperson</h1>
           <h2 className="text-2xl font-bold py-2">Shri Alok Anand Tripathi</h2>
         </div>
-        <div className="max-w-2xl mx-auto text-lg leading-relaxed">
+        <div className="w-[90%] mx-auto text-lg leading-relaxed py-4">
           <p>
             Alok Anand Tripathi, better known as Pandit Ji, the founder of Daiv-Prashna, is a distinguished figure in the world of Vedic astrology and spiritual guidance. With 18 years of experience, Alok has built a reputation as a mystical astrologer, renowned not only for his expertise but also for his deep commitment to social service and his rich guru lineage.
           </p>

@@ -184,13 +184,21 @@ app.post('/send-email', async (req, res) => {
 
         // Configure the transporter
         let transporter = nodemailer.createTransport({
-            service: "gmail",
+            host: process.env.EMAIL_HOST,
+            port: process.env.EMAIL_PORT,
+            secure: process.env.EMAIL_PORT == 465, 
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
             },
         });
-
+        transporter.verify((error, success) => {
+            if (error) {
+                console.error("SMTP Error:", error);
+            } else {
+                console.log("SMTP is ready to send emails!");
+            }
+        });
         let mailOptions = {
             from: process.env.EMAIL_USER,
             to,

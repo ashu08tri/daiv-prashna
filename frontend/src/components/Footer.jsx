@@ -1,16 +1,7 @@
 import React from 'react';
-import { useNavigate } from "react-router-dom";
 
 function Footer() {
-  const navigate = useNavigate();
   const token = localStorage.getItem("token");
-
-  const scrollToFounder = () => {
-    navigate("/lineage");
-    setTimeout(() => {
-      document.getElementById("founder")?.scrollIntoView({ behavior: "smooth" });
-    }, 300);
-  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
