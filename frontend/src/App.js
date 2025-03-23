@@ -19,6 +19,7 @@ import ReturnPage from './pages/ReturnPage';
 import ShippingPage from "./pages/ShippingPage";
 import Footer from './components/Footer';
 import AdminLogin from "./pages/AdminLogin";
+import FoundersPage from "./pages/Founder";
 
 const App = () => {
   const location = useLocation();
@@ -43,6 +44,7 @@ const App = () => {
           <Route path="/contact_us" element={<ContactUs />} />
           <Route path="/return_refund" element={<ReturnPage />} />
           <Route path="/shipping" element={<ShippingPage />} />
+          <Route path="/founder" element={<FoundersPage />} />
         </Routes>
       </AnimatePresence>
       <Footer />

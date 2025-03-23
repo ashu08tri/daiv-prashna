@@ -44,6 +44,12 @@ function Lineage() {
               title: "Shri Neelkanth Shastry (Varanasi)",
               description: "Shri Neelkanth Shastry was a renowned scholar and spiritual practitioner based in Varanasi, India. He gained prominence for his expertise in astrology, palmistry, Tantra, and Vedic sadhana. Operating from his establishment, Jyotish Gaveshanagar, he provided astrological consultations, offering insights into individuals' past, present, and future.Devotees and seekers would visit him, often experiencing profound clarity and guidance through his readings. His deep understanding of ancient scriptures and spiritual practices made him a respected figure in the spiritual community of Varanasi, leaving a lasting impact on those who sought his wisdom."
             },
+            {
+              image: "",
+              title: "Shri Alok Anand Tripathi",
+              url: "/founder",
+              description: "Alok Anand Tripathi better known as Pandit Ji, the founder of Daiv-Prashna, is a distinguished figure in the world of Vedic astrology and spiritual guidance. With 18 years of experience, Alok has built a reputation as a mystical astrologer, renowned not only for his expertise but also for his deep commitment to social service and his rich guru lineage. His practice is a rare fusion of ancient astrological wisdom and a heartfelt desire to help individuals from all walks of life."
+            }
           ].map((item, index) => (
             <div key={index} className="relative">
               <motion.div
@@ -54,7 +60,7 @@ function Lineage() {
               >
                 <img src={item.image} alt={item.title} className="w-64 h-64 object-cover rounded-lg shadow-md" />
                 <div className="max-w-2xl text-center md:text-left">
-                  <h2 className="text-2xl text-custom-yellow font-bold mb-4">{item.title}</h2>
+                  {item.url ? <a href={item.url} className="text-2xl text-custom-yellow font-bold mb-4">{item.title}</a> :<h2 className="text-2xl text-custom-yellow font-bold mb-4">{item.title}</h2>}
                   <p className="text-custom-yellow text-lg leading-relaxed">{item.description}</p>
                 </div>
               </motion.div>
@@ -71,29 +77,7 @@ function Lineage() {
                 </motion.div>
               )}
             </div>
-            
           ))}
-
-          {/* Last Person Without Image */}
-          <motion.div
-            initial={{ y: -30 }}
-            whileInView={{ y: 0, opacity: 1, transition: { delay: 0.3, duration: 0.5, ease: 'easeIn' }}}
-            viewport={{ once: true, amount: 'all' }}
-            id="founder"
-          >
-            <h2 className="text-2xl text-custom-yellow font-bold text-center py-2">Shri Alok Anand Tripathi</h2>
-            <p className="text-custom-yellow text-lg leading-relaxed max-w-2xl mx-auto">
-            Alok Anand Tripathi better known as Pandit Ji, the founder of Daiv-Prashna, is a distinguished figure in the world of Vedic astrology and spiritual guidance. With 18 years of experience, Alok has built a reputation as a mystical astrologer, renowned not only for his expertise but also for his deep commitment to social service and his rich guru lineage. His practice is a rare fusion of ancient astrological wisdom and a heartfelt desire to help individuals from all walks of life.
-            </p>
-            <p className="text-custom-yellow text-lg leading-relaxed max-w-2xl mx-auto">
-            Pandit Ji's social service is a cornerstone of his work. For over 15 years, he has been offering free consultations to individuals of all castes and financial backgrounds, ensuring that astrology and spiritual guidance are accessible to everyone. His unwavering belief in using astrology as a tool for uplifting society has led him to serve thousands of people, particularly those in need of clarity and guidance but without the means to afford traditional services. Pandit Ji's philosophy is rooted in the understanding that spiritual insight should transcend material boundaries, aiming to create a positive impact on the lives of the less privileged.
-            </p>
-            <p className="text-custom-yellow text-lg leading-relaxed max-w-2xl mx-auto">Pandit Ji's unique ability to blend mystical knowledge of astrology with practical guidance is what sets him apart. His method of Manual Vedic Horoscope Making, using over 102 years of Vedic penchant data, is mystical in nature, drawing on centuries-old wisdom. His intuitive ability to craft horoscopes and offer precise predictions by simply observing a person’s appearance, caste, and financial status speaks to his profound connection with the spiritual and astrological realms. It is this depth of knowledge that allows Alok to provide accurate and life-changing predictions for his clients, helping them navigate personal and professional challenges with newfound clarity.</p>
-            <p className="text-custom-yellow text-lg leading-relaxed max-w-2xl mx-auto">At the heart of Pandit Ji's practice lies his guru lineage, which is an essential part of his spiritual identity. He is a direct disciple of Shree Neelkanth Shastri, one of the foremost Vedic scholars and astrologers. His guru, Shree Neelkanth Shastri, was a disciple of Shri Gopinath Kaviraj, who was in turn a direct disciple of the legendary Shri Vishuddhanand Paramhansa, the enlightened sage who consecrated the Nav Mundi Asan in Varanasi. This unbroken chain of spiritual masters provides Alok with a rich and sacred legacy, offering him access to powerful, time-honored wisdom that has been passed down through generations.</p>
-            <p className="text-custom-yellow text-lg leading-relaxed max-w-2xl mx-auto">Through his deep connection to this sacred lineage, Alok inherits not only knowledge but a spiritual responsibility to guide others. His teachings and astrological practices are rooted in the profound insights shared by these great masters, and he continues to preserve and pass on this mystical knowledge through his work at Daiv-Prashna.</p>
-            <p className="text-custom-yellow text-lg leading-relaxed max-w-2xl mx-auto">In addition to his spiritual and astrological work, Alok is an accomplished entrepreneur, owning GGC Clothing Company and Nivesh Jano. His entrepreneurial ventures reflect his versatile nature, but it is his dedication to social service and spiritual enlightenment that truly defines his legacy.</p>
-            <p className="text-custom-yellow text-lg leading-relaxed max-w-2xl mx-auto">Alok Anand Tripathi’s vision for Daiv-Prashna is to offer spiritual guidance and astrological wisdom to a global audience, with a focus on uplifting individuals through both practical advice and spiritual transformation. Through his unwavering commitment to service, mystical knowledge, and deep spiritual roots, Alok continues to make a lasting impact on the lives of those he serves.</p>
-          </motion.div>
         </div>
       </div>
     </>

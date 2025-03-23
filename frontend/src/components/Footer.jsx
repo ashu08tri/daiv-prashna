@@ -28,10 +28,10 @@ function Footer() {
               <li>
                 <a href="/contact_us" className="hover:underline">Contact Us</a>
               </li>
-              <button onClick={scrollToFounder} className="hover:underline">
-                Founder
-              </button>
-              <li className="mb-4">
+              <li className='my-2'>
+              <a href="/founder" className="hover:underline">Founder</a>
+              </li>
+              <li>
                 {token ? (
                   <button onClick={handleLogout} className="hover:underline text-red-500">
                     Logout
