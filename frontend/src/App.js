@@ -18,7 +18,7 @@ import ContactUs from "./pages/ContactUs";
 import ReturnPage from './pages/ReturnPage';
 import ShippingPage from "./pages/ShippingPage";
 import Footer from './components/Footer';
-import AdminLogin from "./pages/AdminLogin";
+import Admin from "./pages/Admin";
 import FoundersPage from "./pages/Founder";
 
 const App = () => {
@@ -30,7 +30,7 @@ const App = () => {
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Home />} />
-          <Route path="/admin-login" element={<AdminLogin />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="/yoga" element={<Yoga />} />
           <Route path="/astrology" element={<Astrology />} />
           <Route path="/pooja" element={<Pooja />} />

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import Container from '../components/Container';
 import logo from '../assets/images/logo.png';
-import SuccessPay from '../components/SuccessPay';
+import namaste from '../assets/images/namaste.jpg'
 
 
 function Payment() {
@@ -98,6 +98,7 @@ function Payment() {
                 to: email,
                 subject: "Payment Request for Daiv-Prashna Service",
                 text: `Dear ${name},\n\nWe hope you're well. This is a reminder regarding the payment for the Daiv-Prashna service you have requested.\n\nAmount Due: ₹${totalAmount}\nServices: ${serviceDetails}\n\nBank Details:\nAccount No - 623801535116\nName - ALOK ANANDKUMAR TRIPATHI\nIFSC code - ICIC0006238\n\nOnce the payment is received, we will send a confirmation email and proceed with scheduling your appointment.\n\nThank you for your prompt attention.\n\nBest regards,\nDaiv-Prashna.in\nMob: +91-9930005234`,
+                services
             };
 
             // Send email via backend
@@ -313,17 +314,18 @@ function Payment() {
                         <button
                             onClick={() => {
                                 setServices([]);
-                                setTimeout(() => {
-                                    navigate('/')
-                                }, 5000)
+                                navigate('/');
                             }}
                             className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl"
                         >
                             &times;
                         </button>
-                        <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                        <h2 className="text-2xl font-semibold text-gray-900">
                             Payment Email Sent
                         </h2>
+                        <div className='flex justify-center h-20 my-6'>
+                        <img src={namaste} alt="namaste" className='w-20 h-full object-cover'/>
+                        </div>
                         <p className="text-gray-700 text-lg">
                         Thank you for booking a service with Daiv-Prashna. Please check your email and WhatsApp for the payment details. Your booking will be confirmed once we receive your payment.
                         </p>

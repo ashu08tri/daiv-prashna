@@ -9,9 +9,8 @@ import multer from "multer";
 import fs from "fs";
 import path from "path";
 import jwt from "jsonwebtoken";
-import { Testimonial, Media, Article } from "./modal/schema.js";
+import { Testimonial, Media, Article, Service, Customer } from "./modal/schema.js";
 
-import { Customer, Service } from "./modal/schema.js";
 config();
 
 async function connectToDatabase() {
@@ -29,7 +28,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-app.use(express.json({ limit: "50mb" })); 
+app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use("/uploads", express.static("uploads"));
 
@@ -113,16 +112,21 @@ app.delete('/deleteData', async (req, res) => {
 
 })
 
-app.delete('/removeService/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-        await Service.deleteOne({ _id: id });
-        res.json({ ok: true })
-    } catch (err) {
-        res.status(403).send(err)
-    }
+app.get("/services", async (req, res) => {
+    const services = await Service.find();
+    res.json(services);
+});
 
-})
+app.patch("/service/:id", async (req, res) => {
+    await Service.findByIdAndUpdate(req.params.id, { paid: req.body.paid });
+    res.json({ message: "Status updated" });
+});
+
+
+app.delete("/service/:id", async (req, res) => {
+    await Service.findByIdAndDelete(req.params.id);
+    res.json({ message: "Service deleted" });
+});
 
 app.get('/verifyToken/:token', async (req, res) => {
     const { token } = req.params;
@@ -176,7 +180,9 @@ app.post("/login", async (req, res) => {
 //email
 app.post('/send-email', async (req, res) => {
     try {
-        const { to, subject, text } = req.body;
+        const { to, subject, text, services } = req.body;
+        const newService = new Service(services[0]);
+        await newService.save();
 
         if (!to || !subject || !text) {
             return res.json({ error: "Missing required fields" }, { status: 400 });
@@ -186,7 +192,7 @@ app.post('/send-email', async (req, res) => {
         let transporter = nodemailer.createTransport({
             host: process.env.EMAIL_HOST,
             port: process.env.EMAIL_PORT,
-            secure: process.env.EMAIL_PORT == 465, 
+            secure: process.env.EMAIL_PORT == 465,
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
@@ -213,25 +219,25 @@ app.post('/send-email', async (req, res) => {
         console.error("Error sending email:", error);
         return res.json({ error: "Internal server error" }, { status: 500 });
     }
-})
+});
 
 // Create Testimonial
 app.post("/testimonials", authenticateToken, upload.single("image"), async (req, res) => {
     try {
         const { name, review, imageUrl, rating } = req.body;
-        
+
         let imagePath = "";
         if (req.file) {
-            imagePath = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`; 
+            imagePath = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
         } else if (imageUrl) {
-            imagePath = imageUrl; 
+            imagePath = imageUrl;
         } else {
             return res.status(400).json({ error: "No image provided" });
         }
 
         const testimonial = new Testimonial({
             name, review,
-            image: imagePath, 
+            image: imagePath,
             rating
         });
 
@@ -252,9 +258,9 @@ app.get("/testimonials", async (req, res) => {
 app.put("/testimonials/:id", authenticateToken, upload.single("image"), async (req, res) => {
     try {
         const { name, review, imageUrl, rating } = req.body;
-        const { id } = req.params; 
+        const { id } = req.params;
 
-        let imagePath = imageUrl; 
+        let imagePath = imageUrl;
 
         if (req.file) {
             imagePath = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
@@ -269,7 +275,7 @@ app.put("/testimonials/:id", authenticateToken, upload.single("image"), async (r
             return res.status(404).json({ error: "Testimonial not found" });
         }
 
-        res.status(200).json(testimonial); 
+        res.status(200).json(testimonial);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -286,12 +292,12 @@ app.delete("/testimonials/:id", authenticateToken, async (req, res) => {
 app.post("/article", authenticateToken, upload.single("image"), async (req, res) => {
     try {
         const { title, author, imageUrl } = req.body;
-        
+
         let imagePath = "";
         if (req.file) {
-            imagePath = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`; 
+            imagePath = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
         } else if (imageUrl) {
-            imagePath = imageUrl; 
+            imagePath = imageUrl;
         } else {
             return res.status(400).json({ error: "No image provided" });
         }
@@ -299,7 +305,7 @@ app.post("/article", authenticateToken, upload.single("image"), async (req, res)
         const article = new Article({
             title,
             author,
-            image: imagePath, 
+            image: imagePath,
         });
 
         await article.save();
@@ -319,9 +325,9 @@ app.get("/article", async (req, res) => {
 app.put("/article/:id", authenticateToken, upload.single("image"), async (req, res) => {
     try {
         const { title, author, imageUrl } = req.body;
-        const { id } = req.params; 
+        const { id } = req.params;
 
-        let imagePath = imageUrl; 
+        let imagePath = imageUrl;
 
         if (req.file) {
             imagePath = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
@@ -336,7 +342,7 @@ app.put("/article/:id", authenticateToken, upload.single("image"), async (req, r
             return res.status(404).json({ error: "Article not found" });
         }
 
-        res.status(200).json(article); 
+        res.status(200).json(article);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -353,12 +359,12 @@ app.delete("/article/:id", authenticateToken, async (req, res) => {
 app.post("/media", authenticateToken, upload.single("image"), async (req, res) => {
     try {
         const { title, description, imageUrl } = req.body;
-        
+
         let imagePath = "";
         if (req.file) {
-            imagePath = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`; 
+            imagePath = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
         } else if (imageUrl) {
-            imagePath = imageUrl; 
+            imagePath = imageUrl;
         } else {
             return res.status(400).json({ error: "No image provided" });
         }
@@ -366,7 +372,7 @@ app.post("/media", authenticateToken, upload.single("image"), async (req, res) =
         const media = new Media({
             title,
             description,
-            image: imagePath, 
+            image: imagePath,
         });
 
         await media.save();
@@ -386,9 +392,9 @@ app.get("/media", async (req, res) => {
 app.put("/media/:id", authenticateToken, upload.single("image"), async (req, res) => {
     try {
         const { title, description, imageUrl } = req.body;
-        const { id } = req.params; 
+        const { id } = req.params;
 
-        let imagePath = imageUrl; 
+        let imagePath = imageUrl;
 
         if (req.file) {
             imagePath = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
@@ -403,7 +409,7 @@ app.put("/media/:id", authenticateToken, upload.single("image"), async (req, res
             return res.status(404).json({ error: "Media not found" });
         }
 
-        res.status(200).json(media); 
+        res.status(200).json(media);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

@@ -58,7 +58,7 @@ const Login = ({ onClose }) => {
                     const decodedToken = JSON.parse(atob(token.split('.')[1]));
                     localStorage.setItem("role", decodedToken.role);  // Store role in localStorage
 
-                    navigate('/');
+                    navigate('/admin');
                 } else {
                     alert(data.message);
                 }

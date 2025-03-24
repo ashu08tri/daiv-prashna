@@ -20,15 +20,18 @@ function Footer() {
                 <a href="/contact_us" className="hover:underline">Contact Us</a>
               </li>
               <li className='my-2'>
-              <a href="/founder" className="hover:underline">Founder</a>
+                <a href="/founder" className="hover:underline">Founder</a>
               </li>
               <li>
                 {token ? (
-                  <button onClick={handleLogout} className="hover:underline text-red-500">
-                    Logout
-                  </button>
+                  <li className='flex flex-col items-start my-2'>
+                    <a href="/admin" className="hover:underline">Admin</a>
+                    <button onClick={handleLogout} className="hover:underline text-red-500 mt-2">
+                      Logout
+                    </button>
+                  </li>
                 ) : (
-                  <a href="/admin-login" className="hover:underline">Admin</a>
+                  <a href="/admin" className="hover:underline">Admin</a>
                 )}
               </li>
             </ul>
