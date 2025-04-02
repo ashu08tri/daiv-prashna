@@ -12,7 +12,9 @@ const ServiceTable = () => {
       .then(res => setServices(res.data))
       .catch(err => console.error(err));
   }, []);
+   
 
+  
   return (
     <div className="p-6 h-full">
       <h2 className="text-3xl font-semibold text-custom-maroon mb-6">Service List</h2>
@@ -27,6 +29,9 @@ const ServiceTable = () => {
             <tr className="bg-custom-maroon text-white">
               <th className="p-3 text-left">Name</th>
               <th className="p-3 text-left">Service</th>
+              <th className="p-3 text-left">Date</th>
+              <th className="p-3 text-left">Time</th>
+              <th className="p-3 text-left">Country</th>
               <th className="p-3 text-left">Amount</th>
               <th className="p-3 text-left">Paid</th>
               <th className="p-3 text-left">Actions</th>
