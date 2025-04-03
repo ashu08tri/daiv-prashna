@@ -1,7 +1,9 @@
 # dependencies
+node_modules
 node_modules/
 
 # environment variables
+.env
 .env*
 .DS_Store
 
