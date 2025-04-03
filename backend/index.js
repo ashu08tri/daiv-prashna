@@ -181,8 +181,8 @@ app.post("/login", async (req, res) => {
 app.post('/send-email', async (req, res) => {
     try {
         const { to, subject, text, services } = req.body;
-        const newService = new Service(services[0]);
-        await newService.save();
+        const newService = new Service({ email: to, ...services[0] });
+        await newService.save();    
 
         if (!to || !subject || !text) {
             return res.json({ error: "Missing required fields" }, { status: 400 });
@@ -291,7 +291,7 @@ app.delete("/testimonials/:id", authenticateToken, async (req, res) => {
 // Create Articles
 app.post("/article", authenticateToken, upload.single("image"), async (req, res) => {
     try {
-        const { title, author, imageUrl } = req.body;
+        const { title, author, imageUrl, description  } = req.body;
 
         let imagePath = "";
         if (req.file) {
@@ -306,11 +306,14 @@ app.post("/article", authenticateToken, upload.single("image"), async (req, res)
             title,
             author,
             image: imagePath,
+            description
         });
 
         await article.save();
         res.status(201).json(article);
     } catch (error) {
+        console.log(error.message);
+        
         res.status(500).json({ error: error.message });
     }
 });
@@ -324,7 +327,7 @@ app.get("/article", async (req, res) => {
 // Update Articles
 app.put("/article/:id", authenticateToken, upload.single("image"), async (req, res) => {
     try {
-        const { title, author, imageUrl } = req.body;
+        const { title, author, imageUrl, description } = req.body;
         const { id } = req.params;
 
         let imagePath = imageUrl;
@@ -333,7 +336,7 @@ app.put("/article/:id", authenticateToken, upload.single("image"), async (req, r
             imagePath = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
         }
 
-        const updateFields = { title, author };
+        const updateFields = { title, author, description };
         if (imagePath) updateFields.image = imagePath;
 
         const article = await Article.findByIdAndUpdate(id, updateFields, { new: true });

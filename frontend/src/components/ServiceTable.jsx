@@ -12,6 +12,9 @@ const ServiceTable = () => {
       .then(res => setServices(res.data))
       .catch(err => console.error(err));
   }, []);
+
+  console.log(services);
+  
    
 
   
@@ -31,7 +34,7 @@ const ServiceTable = () => {
               <th className="p-3 text-left">Service</th>
               <th className="p-3 text-left">Date</th>
               <th className="p-3 text-left">Time</th>
-              <th className="p-3 text-left">Country</th>
+              <th className="p-3 text-left">Email</th>
               <th className="p-3 text-left">Amount</th>
               <th className="p-3 text-left">Paid</th>
               <th className="p-3 text-left">Actions</th>

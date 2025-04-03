@@ -57,6 +57,7 @@ const ArticleSchema = new mongoose.Schema({
     title: String,
     image: String,
     author: String,
+    description: String,
 });
 
 export const Article = mongoose.model("Article", ArticleSchema);

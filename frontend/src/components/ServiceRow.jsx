@@ -1,8 +1,8 @@
 import axios from "axios";
 import { motion } from "framer-motion";
 
-const ServiceRow = ({ service, setServices, id }) => {    
-  const { name, date, appDate, gender, country, time ,yogaType, vastuType, poojaType, astrologyType, shraddhaType, astroAmount, yogaAmount, vastuAmount, poojaAmount, paid } = service;
+const ServiceRow = ({ service, setServices, id }) => {
+  const { name, date, email, time, yogaType, vastuType, poojaType, astrologyType, shraddhaType, astroAmount, yogaAmount, vastuAmount, poojaAmount, paid } = service;
 
   // Determine service type and amount
   const serviceType = yogaType || vastuType || poojaType || astrologyType || shraddhaType || "N/A";
@@ -27,15 +27,16 @@ const ServiceRow = ({ service, setServices, id }) => {
       console.error(err);
     }
   };
-  
+
 
   return (
     <motion.tr className="border-b bg-custom-ivory" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
       <td className="p-3">{name}</td>
       <td className="p-3">{serviceType}</td>
-      <td className="p-3">{new Date(date).toLocaleDateString()}</td>
-      <td className="p-3">{time}</td>
-      <td className="p-3">{country.length > 0 ? country: "N/A"}</td>
+      <td className="p-3">
+        {new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
+      <td className="p-3">{time.length > 0 ? time : "N/A"}</td>
+      <td className="p-3">{email}</td>
       <td className="p-3">₹{amount}</td>
       <td className="p-3">
         <button
