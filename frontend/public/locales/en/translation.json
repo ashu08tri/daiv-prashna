@@ -1,0 +1,239 @@
+{
+  "carousal": {
+    "MainTitle": "Our Services",
+    "card1": {
+      "title": "Yoga",
+      "desc": "Learn Proven Techniques and Practices"
+    },
+    "button": "View Details",
+    "card2": {
+      "title": "Shraddha (Ancestral Rites )",
+      "desc": "Learn Proven Techniques and Practices"
+    },
+    "card3": {
+      "title": "Vedic Pooja",
+      "desc": "Learn Proven Techniques and Practices"
+    },
+    "card4": {
+      "title": "Vastu-Shastra",
+      "desc": "Learn Proven Techniques and Practices"
+    },
+    "card5": {
+      "title": "Astrology",
+      "desc": "Learn Proven Techniques and Practices"
+    },
+    "card6": {
+      "title": "Disease Consultancy",
+      "desc": "Learn Proven Techniques and Practices"
+    }
+  },
+  "footer": {
+    "legal": "Legal",
+    "helpCenter": "Help center  ",
+    "contactUs": "Contact Us",
+    "logout": "Logout",
+    "privacyPolicy": "Privacy Policy",
+    "termsAndCondition": "Terms &amp; Conditions",
+    "ReturnAndfound": "Return &amp; Refund",
+    "shoppingPolicy": "Shipping Policy",
+    "daivPrashan": "Daiv-Prashna",
+    "allRightReserved": "All Rights Reserved."
+  },
+  "founders": "Founder",
+  "hero": {
+    "mainHeading": {
+      "lineage": "Lineage",
+      "mission": "Mission",
+      "MysticismAndSadanand": "Mysticism & Sadanand"
+    }
+  },
+  "navbar": {
+    "prashadCorner": {
+      "title": "Prashad Corner",
+      "info": {
+        "title": "Prashad Shipment Details"
+      },
+      "buttonText": {
+        "submit": "Submit",
+        "saving": "Saving",
+        "close": "Close"
+      }
+    },
+    "button": {
+      "title": "Book Appointment"
+    },
+    "links": {
+      "astrology": {
+        "title": "Astrology",
+        "additionalData": {
+          "title1": "New Horoscope",
+          "title2": "Existing Horoscope analysis",
+          "title3": "Diesease Related Consultancy",
+          "title4": "Astrology for the underpriveledge"
+        }
+      },
+      "vastu": {
+        "title": "Vastu-Shastra",
+        "additionalData": {
+          "title1": "Vastu Modifications",
+          "title2": "New Home Vastu",
+          "title3": "Turn Key projects"
+        }
+      },
+      "pooja": {
+        "title": "Vedic Pooja",
+        "additionalData": {
+          "title1": "Pooja For Growth",
+          "title2": "Pooja for Overcoming Obstacles",
+          "title3": "Pooja for Reversing Negative Energies",
+          "title4": "Pooja for Mental piece & Happiness",
+          "title5": "Yearly Pooja for overall well-being"
+        }
+      },
+      "yoga": {
+        "title": "Yoga & Meditation",
+        "additionalData": {
+          "title1": "Shakti Yoga",
+          "title2": "Astanga Yoga",
+          "title3": "Kriya Yoga",
+          "title4": "Hath Yoga",
+          "title5": "Basics of Meditation",
+          "title6": "Every day Meditation"
+        }
+      },
+      "shraddha": {
+        "title": "Shraddha (Ancestral Rites )",
+        "additionalData": {
+          "title1": "Yearly Shraddha",
+          "title2": "Shraddha at Gaya(Quaterly Shraddha)",
+          "title3": "Shraddha at Bhrama Kapal(Monthly shraddha)"
+        }
+      }
+    }
+  },
+  "tabs": {
+    "media": "Media",
+    "testimonials": "Testimonials",
+    "articles": "Articles"
+  },
+  "BookSessionbuttonText": "Book Session",
+  "astrology": {
+    "main": {
+      "heading": "Astrology",
+      "para1": "In ancient scriptures, the practice of Daivprashna was developed and utilized for a diverse range of purposes such as calculating astronomical data and predicting natural occurrences like rainfall, floods, and disasters. Rishi Bhrigu is acknowledged for employing this science to forecast the past, present, and future of any individual. His work, the Bhrigu Samhita, is renowned for its intricate compilation of all potential horoscopes that could exist in the universe, accompanied by specific predictions regarding past and future events. However, Bhrigu entrusts the ultimate prediction of an individual's destiny to the discernment of the astrologer, who must analyze the current circumstances of the seeker in order to provide meaningful insights.",
+      "para2": "This final point provides a more comprehensive understanding of the astrology process, emphasizing that an individual's current circumstances play a crucial role in shaping their future, which cannot be predetermined. Now, the question arises: who is qualified to answer a \"DaivPrashna\" The Sanskrit term \"DaivPrashna\" combines \"Daiv\" and \"Prashna,\" translating to \"Fate\" and \"question,\" respectively. To predict fate, one must comprehend the purpose of an individual's existence, as their fate is the path leading to their specific reason or goal. At Daivprashna, we analyze the underlying reasons before forecasting an individual's fate, and, most importantly, we focus on providing solutions, which is more significant than simply predicting fate and leaving everything to luck and chance."
+    },
+    "consultancy": {
+      "heading": "Astrology Consultancy",
+      "subHeading": "New Horoscope"
+    },
+    "concultancy": {
+      "para": "Our horoscope creation services combine traditional and computer techniques to produce authentic and accurate horoscopes. In-person consultations are available to answer specific questions, while we do not entertain general questions. We pride ourselves in providing personalized and precise insights into astrological matters to help individuals make informed decisions."
+    },
+    "bookNow": "Book Now",
+    "analytics": {
+      "subheading": "Existing Horoscope analysis",
+      "para": "Our services entail in-person consultations where we offer a thorough analysis of your horoscope, along with customized solutions to address your specific problems. We also provide guidance on future prospects and life goals, while employing scientifically-backed remedies to support and enhance your personal growth journey."
+    },
+    "dieseasesConsultancy": {
+      "subHeading": "Diesease Related Consultancy",
+      "para1": "This appointment is only scheduled for existing dieseases that a person has and need urgent guidence in either diagonis or cure.",
+      "para2": "This service is not chargeable"
+    },
+    "unprivileged": {
+      "subHeading": " Astrology for the underpriveledge",
+      "para": "Astrology Should be accessible to everyone, including those who cannot afford to spend any money. Our Founder has dedicated over 15 years to serving such individuals, offering solutions that require minimal effort. We welcome anyone who may be constrained and unable to allocate even a single rupee towards addressing their problems, to schedule an appointment and seek assistance from us."
+    }
+  },
+  "bookSession": "Book Session",
+  "pooja": {
+    "main": {
+      "title": "Pooja",
+      "para1": " The essence of the word \"puja\" has been explored by humans since ancient times, leading to various worship practices aimed at connecting with the divine. Puja can take three primary forms: it may involve sitting down and reciting hymns, performing a fire sacrifice, or offering water (tarpan). The tarpan ritual is often dedicated to ancestors, who are considered integral to our daily worship.",
+      "para2": "It is crucial to understand that excessive puja may not be beneficial in today's context, as these rituals evolved centuries ago and may not align with modern dynamics. At Daivprashna, we recognize your spiritual needs and recommend the most suitable puja practices in today's context. We tailor our suggestions based on your specific goals and requirements, ensuring that the rituals resonate with your contemporary lifestyle and aspirations."
+    },
+    "services": {
+      "heading": "Pooja Services",
+      "subHeading1": "Pooja for Growth",
+      "para1": "It's true that all stagnant things can deteriorate unless one learns how to manage stagnation effectively. In the context of today's fast-paced world, the pooja suggestions we offer are designed to act as boosters for your success and personal growth. By understanding your fundamental needs and aspirations, we prescribe pooja practices that can serve as catalysts for positive energy and progress in your life. Our approach is tailored to your individual circumstances, aiming to provide support and alignment for your modern, dynamic lifestyle.",
+      "subHeading2": "Pooja for Overcoming Obstacles",
+      "para2": "These pooja procedures aim at making you \"Apavighn\" which means without obstacles.",
+      "subHeading3": "Pooja for Reversing Negative Energies",
+      "para3": "Negative energies can impact our well-being and prevent us from achieving our goals, which is why pooja for reversing negative energies is essential. This type of pooja aims to eliminate negative vibrations from our environment and replace them with positive energy. During this pooja, mantras are recited and rituals performed to remove negative energy and bring in positive energy. The primary goal is to seek divine intervention for reversing any harmful effects of negative energy and to restore balance and harmony in our lives. By performing this pooja, we can combat negative influences and create a more positive, peaceful, and prosperous life for ourselves.",
+      "subHeading4": "Pooja for Mental Piece & Happiness",
+      "para4": "Pooja for Mental Peace & Happiness is a sacred ritual performed to invoke positive energies and promote a sense of calmness and contentment within oneself. This pooja involves offering prayers and performing rituals to deities associated with mental well-being, such as Lord Shiva and Lord Vishnu, and seeking their blessings for a peaceful mind and overall happiness. The pooja includes chanting of mantras, lighting incense sticks, offering flowers, and performing aarti. It is believed that the vibrations created during the pooja purify the surroundings and help in clearing negative thoughts, thereby bringing mental serenity and inner joy. By dedicating time to this sacred practice, individuals can experience a stronger connection with their inner self, leading to improved mental health and a greater sense of harmony and happiness in life.",
+      "subHeading5": "Yearly Pooja for overall well-being",
+      "para5": "The Yearly Pooja for overall well-being is a significant and auspicious ritual that aims to garner blessings for health, prosperity, and harmony throughout the year. This annual ceremony involves invoking the divine forces through prayers, offerings, and religious customs to seek protection from obstacles and negative influences. The pooja typically includes the worship of various deities, recitation of sacred hymns, and the performance of rituals that are believed to purify the environment and bring positive energy into the home or community. By conducting the Yearly Pooja, individuals and families reinforce their spiritual connection and express gratitude while seeking the benevolence of the divine for overall well-being, happiness, and success in all endeavors."
+    },
+    "bookNow": "Book Now"
+  },
+  "shradha": {
+    "main": {
+      "para": "The above shloka elucidates that sacrifices and offerings made to ancestors are known as Shraddha. In Manusmriti, Shraddha is also referred to as \"Pitra yagya.\" The term \"Shraddha\" itself is derived from \"Shraddha,\" which signifies reverence, emphasizing that pleasing the almighty can only be achieved through reverence. The Bhramavayvartaka highlights the necessity of performing \"Pitra yagya\" before every divine activity. This is why the Nandi Shraddha is conducted in Indian tradition even before marriage ceremonies. It is evident that to secure a harmonious future, it is essential for all individuals to perform Pitra yagya at some point in their lives.",
+      "heading": "Shraddhas"
+    },
+    "yearly": {
+      "heading": "Yearly Shraddha",
+      "para": "The Yearly Ancestral Pooja is a significant ritual that is performed to pay homage to our forefathers and seek their blessings. It is believed that performing this pooja can bring prosperity, peace, and harmony to the family. This pooja is usually conducted on the death anniversary of the deceased ancestors or during the Pitru Paksha period, which is a fortnight dedicated to ancestral worship as per the Hindu calendar. During the pooja, offerings such as food, flowers, and other household items are made to the ancestors, followed by chanting of mantras and performing of aarti. The Yearly Ancestral Pooja is seen as a way of expressing gratitude to our ancestors for their blessings, seeking their continued guidance, and ensuring their well-being in the afterlife. By performing this pooja with devotion and sincerity, one can cultivate a deeper connection with their ancestors and experience a greater sense of spiritual fulfillment and contentment."
+    },
+    "bookNow": "Book Now",
+    "quaterly": {
+      "heading": "Shraddha at Gaya",
+      "subheading": "Shraddha at Gaya",
+      "para": "Shraddha at Gaya, Bihar, holds immense significance in Hindu tradition as it is believed to be a sacred place where performing rituals for ancestors can bring their souls peace and liberation. Gaya is renowned for the Pind Daan ceremony, a ritual where offerings are made to ancestors to free them from the cycle of birth and death. Many people undertake the journey to Gaya to perform Shraddha rituals during auspicious times such as Pitru Paksha. The rituals at Gaya involve bathing in the sacred Falgu River, offering pindas (rice balls) to ancestors, and seeking their blessings for the well-being of the family. Performing Shraddha at Gaya is considered a profound and spiritually fulfilling experience that allows individuals to honor their ancestors and ensure their eternal peace and happiness in the afterlife."
+    },
+    "monthly": {
+      "heading": "Shraddha at Bhrama Kapal",
+      "subheading": "Monthly Shraddha",
+      "para": "Shraddha at Bhrama Kapal refers to the practice of performing last rites for deceased ancestors at the Bhrama Kapal ghat located along the banks of the holy river Ganges in Varanasi, India. This sacred ritual is believed to help the departed souls achieve liberation and facilitate their journey into the afterlife. Families gather at Bhrama Kapal to offer prayers, perform homa (fire offering), and release the ashes of their loved ones into the flowing waters of the Ganges. The atmosphere at Bhrama Kapal is filled with emotions of reverence, sorrow, and acceptance as people seek to honor their ancestors and seek blessings for their souls. It is a deeply spiritual and poignant experience that underscores the significance of ancestral worship in Indian culture."
+    }
+  },
+  "vastu": {
+    "main": {
+      "heading": "Vastu",
+      "para": "The second key to achieving a balanced and successful life involves Vastu. It is essential to ensure that the environment where you spend 24 hours is harmonious to promote the correct growth. This process, which is slightly more intricate, is closely linked to your horoscope. While a specific direction may be generally favorable, its suitability for you depends on your specific purpose and occupation."
+    },
+    "services": {
+      "heading": "Services of Vastu",
+      "subHeading1": "Vastu Modifications",
+      "para1": "We offer solutions to transform your existing work and living spaces into balanced and positive environments that support both your material and spiritual growth. Through our expertise in Vastu, we can identify and suggest changes to optimize the energy flow in your surroundings, promoting harmony and overall well-being. These solutions are tailored to your specific needs and can help create a conducive atmosphere for your personal and professional endeavors.",
+      "subHeading2": "New Home Vastu",
+      "para2": "If you're looking to select an ideal work or living space that is Vastu compliant, we can help. By analyzing your horoscope and identifying your needs, we can guide you in finding a Vastu complaint space that is most suitable for you. Our expertise in Vastu enables us to evaluate different properties and recommend the ones that have a positive energy flow, promoting balance and growth in all areas of your life.",
+      "subHeading3": "Turnkey Projects",
+      "para3": "We specialize in helping you build your dream work and living spaces from the ground up. By incorporating the perfect directional balance needed for you to excel in both your personal and professional life, we ensure that your environments support your growth and success. Our expertise in Vastu allows us to create spaces that are harmonious and conducive to your overall well-being, helping you achieve your goals and aspirations."
+    },
+    "bookNow": "Book Now"
+  },
+  "yoga": {
+    "main": {
+      "heading": "Types of Yoga"
+    },
+    "types": {
+      "shakti": {
+        "title": "Shakti Yoga",
+        "description": "A typical Shakti yoga session utilizes the same kinds of Hatha yoga poses you'd find in a Vinyasa or Power yoga class. Since this type of yoga is meant to invigorate your body and soul, expect standing and strength building poses that may be somewhat challenging."
+      },
+      "ashtanga": {
+        "title": "Ashtanga Yoga",
+        "description": "What is Ashtanga yoga? The word Ashtanga is comprised of two Sanskrit words, “Ashta” and “Anga.” “Ashta” refers to the number eight, while “Anga” means limb or body part. Therefore, Ashtanga is the union of the eight limbs of yoga, into one complete, holistic system."
+      },
+      "kriya": {
+        "title": "Kriya Yoga",
+        "description": " Kriya is a highly advanced Raja Yoga technique of pranayama. Kriya reinforces and revitalizes subtle currents of life energy (prana) in the spine and brain. The ancient seers of India (rishis) perceived the brain and spine as the tree of life.'"
+      },
+      "hatha": {
+        "title": "Hatha Yoga",
+        "description": "A yoga class described as 'Hatha' will typically involve a set of physical postures (yoga poses) and breathing techniques. These are typically practised more slowly and with more static holds than a Vinyasa flow or Ashtanga class."
+      },
+      "basics": {
+        "title": "Basics of Meditation",
+        "description": "Kriya is a highly advanced Raja Yoga technique of pranayama. Kriya reinforces and revitalizes subtle currents of life energy (prana) in the spine and brain. The ancient seers of India (rishis) perceived the brain and spine as the tree of life."
+      },
+      "everyday": {
+        "title": "Everyday Meditation",
+        "description": "A yoga class described as 'Hatha' will typically involve a set of physical postures (yoga poses) and breathing techniques. These are typically practised more slowly and with more static holds than a Vinyasa flow or Ashtanga class."
+      }
+    },
+    "bookNow": "Book Now"
+  }
+}

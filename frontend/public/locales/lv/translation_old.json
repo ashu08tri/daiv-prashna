@@ -1,0 +1,56 @@
+{
+  "navbar": {
+    "links": {
+      "astrology": {
+        "title": "Astrology",
+        "additionalData": {
+          "title1": "New Horoscope",
+          "title2": "Existing Horoscope analysis",
+          "title3": "Diesease Related Consultancy",
+          "title4": "Astrology for the underpriveledge"
+        }
+      },
+      "vastu": {
+        "title": "Vastu-Shastra",
+        "additionalData": {
+          "title1": "Vastu Modifications",
+          "title2": "New Home Vastu",
+          "title3": "Turn Key projects"
+        }
+      },
+      "pooja": {
+        "title": "Vedic Pooja",
+        "additionalData": {
+          "title1": "Pooja For Growth",
+          "title2": "Pooja for Overcoming Obstacles",
+          "title3": "Pooja for Reversing Negative Energies",
+          "title4": "Pooja for Mental piece & Happiness",
+          "title5": "Yearly Pooja for overall well-being"
+        }
+      },
+      "yoga": {
+        "title": "Yoga & Meditation",
+        "additionalData": {
+          "title1": "Shakti Yoga",
+          "title2": "Astanga Yoga",
+          "title3": "Kriya Yoga",
+          "title4": "Hath Yoga",
+          "title5": "Basics of Meditation",
+          "title6": "Every day Meditation"
+        }
+      },
+      "shraddha": {
+        "title": "Shraddha (Ancestral Rites )",
+        "additionalData": {
+          "title1": "Yearly Shraddha",
+          "title2": "Shraddha at Gaya(Quaterly Shraddha)"
+        }
+      }
+    }
+  },
+  "astrology": {
+    "main": {
+      "buttonText": "Book Session"
+    }
+  }
+}

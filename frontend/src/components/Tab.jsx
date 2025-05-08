@@ -6,6 +6,7 @@ import "react-tabs/style/react-tabs.css";
 import { jwtDecode } from "jwt-decode";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import { useTranslation } from "react-i18next";
 
 const TabsComponent = () => {
     const [selectedItem, setSelectedItem] = useState(null);
@@ -178,6 +179,8 @@ const TabsComponent = () => {
         }
     };
 
+    const {t} = useTranslation()
+
 
     return (
         <>
@@ -185,15 +188,15 @@ const TabsComponent = () => {
                 <TabList className="flex space-x-4 p-2 border-b border-gray-300 cursor-pointer">
                     <Tab className="group px-4 py-2 text-custom-maroon focus:outline-none focus:ring-2 focus:ring-custom-yellow rounded-md transition 
         aria-selected:bg-custom-maroon aria-selected:text-white">
-                        Media
+                        {t("tabs.media", "Media")}
                     </Tab>
                     <Tab className="group px-4 py-2 text-custom-maroon focus:outline-none focus:ring-2 focus:ring-custom-yellow rounded-md transition 
         aria-selected:bg-custom-maroon aria-selected:text-white">
-                        Testimonials
+                        {t("tabs.testimonials", "Testimonials")}
                     </Tab>
                     <Tab className="group px-4 py-2 text-custom-maroon focus:outline-none focus:ring-2 focus:ring-custom-yellow rounded-md transition 
         aria-selected:bg-custom-maroon aria-selected:text-white">
-                        Articles
+                       {t("tabs.articles", "Articles")}
                     </Tab>
                 </TabList>
 

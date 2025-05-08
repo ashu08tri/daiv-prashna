@@ -5,22 +5,31 @@ import ServiceRow from "./ServiceRow";
 
 const ServiceTable = () => {
   const [services, setServices] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  // Fetch services from backend
-  useEffect(() => {
-    axios.get("https://daiv-prashna.onrender.com/services")
-      .then(res => setServices(res.data))
+  const fetchServices = (page = 1) => {
+    axios.get(`https://daiv-prashna.onrender.com?page=${page}`)
+      .then(res => {
+        setServices(res.data.services);
+        setTotalPages(res.data.totalPages);
+        setCurrentPage(res.data.currentPage);
+      })
       .catch(err => console.error(err));
-  }, []);
+  };
 
-  console.log(services);
-  
-   
+  useEffect(() => {
+    fetchServices(currentPage);
+  }, [currentPage]);
 
-  
   return (
     <div className="p-6 h-full">
-      <h2 className="text-3xl font-semibold text-custom-maroon mb-6">Service List</h2>
+      <div className="flex items-center mb-6 gap-8">
+        <h2 className="text-3xl font-semibold text-custom-maroon">Service List</h2>
+        <a href='https://docs.google.com/spreadsheets/d/1i4kW6Yc4e7qRIxmwliksDx7yNMGScVV1-g5-gvwrEqc/edit?gid=0#gid=0'
+          className="px-3 py-1 border-none text-white bg-custom-maroon rounded-lg"
+        >Open in sheet</a>
+      </div>
       <motion.div
         className="overflow-x-auto bg-white shadow-lg rounded-lg"
         initial={{ opacity: 0, y: 20 }}
@@ -46,11 +55,28 @@ const ServiceTable = () => {
                 <ServiceRow key={service._id} service={service} setServices={setServices} id={service._id} />
               ))
             ) : (
-              <tr><td colSpan="5" className="p-4 text-center">No services found.</td></tr>
+              <tr><td colSpan="8" className="p-4 text-center">No services found.</td></tr>
             )}
           </tbody>
         </table>
       </motion.div>
+
+      {/* Pagination Buttons */}
+      <div className="mt-6 flex justify-center gap-2">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentPage(i + 1)}
+            className={`px-3 py-1 rounded-md border ${
+              currentPage === i + 1
+                ? 'bg-custom-maroon text-white'
+                : 'bg-white text-custom-maroon border-custom-maroon'
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
