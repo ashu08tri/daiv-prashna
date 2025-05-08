@@ -32,14 +32,19 @@ function FormModal({ title, onClose, state, listClose,
     const submitHandler = async (e) => {
         e.preventDefault();
     
-        const service = [{
-            id: Math.floor(Math.random() * 1000),name, place, reason, country, date, appDate,
+        const newService = {
+            id: Math.floor(Math.random() * 1000), name, place, reason, country, date, appDate,
             time, gender, nationality, organization,
             yogaType, vastuType, poojaType, astrologyType, shraddhaType,
             astroAmount, yogaAmount, vastuAmount, poojaAmount
-        }];
+        };
     
-        localStorage.setItem("userServiceData", JSON.stringify(service));
+        const existingServices = JSON.parse(localStorage.getItem("userServiceData")) || [];
+        existingServices.push(newService);
+        localStorage.setItem("userServiceData", JSON.stringify(existingServices));
+    
+        // Dispatch event to notify other components
+        window.dispatchEvent(new Event("servicesUpdated"));
     
         if (state) {
             listClose(false);
@@ -261,7 +266,7 @@ function FormModal({ title, onClose, state, listClose,
                                         </div>
                                     </div>
                                 }
-                                {title === 'Pooja Services' && <select name='pooja' className='py-1 bg-custom-maroon text-white' onChange={(e) => {setPoojaType(e.target.value)}} value={poojaType}>
+                                {title === 'Pooja Services' && <select name='pooja' className='py-1 bg-custom-maroon text-white' onChange={(e) => { setPoojaType(e.target.value) }} value={poojaType}>
                                     <option value="">Select Vedic Pooja</option>
                                     <option value="Pooja For Growth">Pooja For Growth</option>
                                     <option value="Pooja for Overcoming Obstacles">Pooja for Overcoming Obstacles</option>
@@ -274,7 +279,7 @@ function FormModal({ title, onClose, state, listClose,
 
 
                             {title === 'Yoga' &&
-                                <select name='yoga' className='md:mb-5 py-1 bg-custom-maroon text-white' onChange={(e) => {setYogaType(e.target.value);}} value={yogaType}>
+                                <select name='yoga' className='md:mb-5 py-1 bg-custom-maroon text-white' onChange={(e) => { setYogaType(e.target.value); }} value={yogaType}>
                                     <option value="">Select type of Yoga</option>
                                     <option value="shakti yoga">Shakti Yoga</option>
                                     <option value="astanga yoga">Astanga Yoga</option>
@@ -298,7 +303,7 @@ function FormModal({ title, onClose, state, listClose,
 
                                     {
                                         title === 'Astrology Consultancy' &&
-                                        <select name='consultancy' className='w-64 md:w-48 py-1 bg-custom-maroon text-white' onChange={(e) => {setAstrologyType(e.target.value)}} value={astrologyType}>
+                                        <select name='consultancy' className='w-64 md:w-48 py-1 bg-custom-maroon text-white' onChange={(e) => { setAstrologyType(e.target.value) }} value={astrologyType}>
                                             <option value="">Astrology</option>
                                             <option value="New Horoscope">New Horoscope</option>
                                             <option value="Existing Horoscope analysis">Existing Horoscope analysis</option>
@@ -553,7 +558,7 @@ function FormModal({ title, onClose, state, listClose,
 
                                     {
                                         title === 'Corporate Consultancy' &&
-                                        <select name='consultancy' className='py-1 bg-custom-maroon text-white w-48' onChange={(e) => {setVastuType(e.target.value)}} value={vastuType}>
+                                        <select name='consultancy' className='py-1 bg-custom-maroon text-white w-48' onChange={(e) => { setVastuType(e.target.value) }} value={vastuType}>
                                             <option value="">Select Consultancy</option>
                                             <option value="Vastu Modifications">Vastu Modifications</option>
                                             <option value="New Home Vastu">New Home Vastu</option>

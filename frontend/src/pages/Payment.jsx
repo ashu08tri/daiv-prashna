@@ -147,6 +147,8 @@ function Payment() {
         subject: "Payment Request for Daiv-Prashna Service",
         text: `Dear ${name},\n\nWe hope you're well. This is a reminder regarding the payment for the Daiv-Prashna service you have requested.\n\nAmount Due: ₹${totalAmount}\nServices: ${serviceDetails}\n\nBank Details:\nAccount No - 623801535116\nName - ALOK ANANDKUMAR TRIPATHI\nIFSC code - ICIC0006238\n\nOnce the payment is received, we will send a confirmation email and proceed with scheduling your appointment.\n\nThank you for your prompt attention.\n\nBest regards,\nDaiv-Prashna.in\nMob: +91-9930005234`,
         services,
+        phoneNo: phonenNumber,
+        totalAmount
       };
 
       // Send email via backend
@@ -729,6 +731,9 @@ function Payment() {
                     )}
                   </div>
                 ))}
+                <div>
+                  <p className="p-3 text-xl font-semibold w-full bg-gray-200 pointer-events-none">Total Amount: <span className="text-xl font-bold">₹{totalAmount}</span></p>
+                </div>
                 <button
                   disabled={loading}
                   className="w-full py-4 mt-4 text-xl font-semibold text-white bg-custom-yellow rounded-lg hover:bg-custom-yellow-dark transition-colors"
