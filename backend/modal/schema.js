@@ -13,6 +13,7 @@ export const Customer = mongoose.models.customers || mongoose.model('customers',
 const serviceSchema = new Schema({
     email: { type: String },
     name: String,
+    phoneNo: Number,
     place: String,
     reason: String,
     country: String,
@@ -33,7 +34,7 @@ const serviceSchema = new Schema({
     poojaAmount: { type: Number },
     shraddhaAmount: { type: Number },
     paid: {type: Boolean, default: false}
-});
+}, { timestamps: true });
 
 export const Service = mongoose.models.services || mongoose.model('services', serviceSchema);
 

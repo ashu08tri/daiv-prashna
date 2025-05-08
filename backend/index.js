@@ -9,6 +9,7 @@ import multer from "multer";
 import fs from "fs";
 import path from "path";
 import jwt from "jsonwebtoken";
+import { appendToSheet } from './utils/googleSheet.js';
 import { Testimonial, Media, Article, Service, Customer } from "./modal/schema.js";
 
 config();
@@ -113,9 +114,22 @@ app.delete('/deleteData', async (req, res) => {
 })
 
 app.get("/services", async (req, res) => {
-    const services = await Service.find();
-    res.json(services);
-});
+    const page = parseInt(req.query.page) || 1;
+    const limit = 8;
+    const skip = (page - 1) * limit;
+  
+    const total = await Service.countDocuments();
+    const services = await Service.find()
+      .sort({ createdAt: -1 }) // sort by latest
+      .skip(skip)
+      .limit(limit);
+  
+    res.json({
+      services,
+      totalPages: Math.ceil(total / limit),
+      currentPage: page,
+    });
+  });  
 
 app.patch("/service/:id", async (req, res) => {
     await Service.findByIdAndUpdate(req.params.id, { paid: req.body.paid });
@@ -180,16 +194,56 @@ app.post("/login", async (req, res) => {
 //email
 app.post('/send-email', async (req, res) => {
     try {
-        const { to, subject, text, services } = req.body;
-        const newService = new Service({ email: to, ...services[0] });
-        await newService.save();    
+        const { to, subject, text, services, phoneNo } = req.body;
 
-        if (!to || !subject || !text) {
-            return res.json({ error: "Missing required fields" }, { status: 400 });
+        if (!to || !subject || !text || !services?.[0] || !phoneNo) {
+            return res.status(400).json({ error: "Missing required fields" });
         }
 
-        // Configure the transporter
-        let transporter = nodemailer.createTransport({
+        const newService = new Service({ email: to, phoneNo: phoneNo, ...services[0] });
+        await newService.save();
+
+        const format = (v) => v == null || v === '' ? 'N/A' : v;
+
+        function formatDate(date) {
+            if (!date) return 'N/A';
+            const d = new Date(date);
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+            const year = d.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        const row = [
+            format(newService.email),
+            format(newService.name),
+            format(newService.phoneNo),
+            format(newService.place),
+            format(newService.reason),
+            format(newService.country),
+            format(formatDate(newService.date)),
+            format(formatDate(newService.appDate)),
+            format(newService.time),
+            format(newService.gender),
+            format(newService.nationality),
+            format(newService.organization),
+            format(newService.yogaType),
+            format(newService.vastuType),
+            format(newService.poojaType),
+            format(newService.astrologyType),
+            format(newService.shraddhaType),
+            format(newService.astroAmount),
+            format(newService.yogaAmount),
+            format(newService.vastuAmount),
+            format(newService.poojaAmount),
+            format(newService.shraddhaAmount),
+            'No',
+        ];
+
+        await appendToSheet(row);
+
+        // Send Email
+        const transporter = nodemailer.createTransport({
             host: process.env.EMAIL_HOST,
             port: process.env.EMAIL_PORT,
             secure: process.env.EMAIL_PORT == 465,
@@ -198,26 +252,18 @@ app.post('/send-email', async (req, res) => {
                 pass: process.env.EMAIL_PASS,
             },
         });
-        transporter.verify((error, success) => {
-            if (error) {
-                console.error("SMTP Error:", error);
-            } else {
-                console.log("SMTP is ready to send emails!");
-            }
-        });
-        let mailOptions = {
+
+        await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to,
             subject,
             text,
-        };
+        });
 
-        let info = await transporter.sendMail(mailOptions);
-
-        return res.json({ success: true, message: "Email sent", info });
-    } catch (error) {
-        console.error("Error sending email:", error);
-        return res.json({ error: "Internal server error" }, { status: 500 });
+        res.status(200).json({ success: true, message: 'Email sent' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
@@ -291,7 +337,7 @@ app.delete("/testimonials/:id", authenticateToken, async (req, res) => {
 // Create Articles
 app.post("/article", authenticateToken, upload.single("image"), async (req, res) => {
     try {
-        const { title, author, imageUrl, description  } = req.body;
+        const { title, author, imageUrl, description } = req.body;
 
         let imagePath = "";
         if (req.file) {
@@ -313,7 +359,7 @@ app.post("/article", authenticateToken, upload.single("image"), async (req, res)
         res.status(201).json(article);
     } catch (error) {
         console.log(error.message);
-        
+
         res.status(500).json({ error: error.message });
     }
 });

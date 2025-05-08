@@ -17,6 +17,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "fs": "^0.0.1-security",
+    "googleapis": "^148.0.0",
     "imap": "^0.8.19",
     "imapflow": "^1.0.184",
     "jsonwebtoken": "^9.0.2",
