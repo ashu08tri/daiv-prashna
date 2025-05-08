@@ -194,13 +194,13 @@ app.post("/login", async (req, res) => {
 //email
 app.post('/send-email', async (req, res) => {
     try {
-        const { to, subject, text, services, phoneNo } = req.body;
+        const { to, subject, text, services, phoneNo, totalAmount } = req.body;
 
         if (!to || !subject || !text || !services?.[0] || !phoneNo) {
             return res.status(400).json({ error: "Missing required fields" });
         }
 
-        const newService = new Service({ email: to, phoneNo: phoneNo, ...services[0] });
+        const newService = new Service({ email: to, phoneNo: phoneNo, totalAmount: totalAmount, ...services[0] });
         await newService.save();
 
         const format = (v) => v == null || v === '' ? 'N/A' : v;

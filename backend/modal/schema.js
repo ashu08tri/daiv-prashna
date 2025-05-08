@@ -33,7 +33,8 @@ const serviceSchema = new Schema({
     vastuAmount: { type: Number },
     poojaAmount: { type: Number },
     shraddhaAmount: { type: Number },
-    paid: {type: Boolean, default: false}
+    paid: {type: Boolean, default: false},
+    totalAmount: Number
 }, { timestamps: true });
 
 export const Service = mongoose.models.services || mongoose.model('services', serviceSchema);
