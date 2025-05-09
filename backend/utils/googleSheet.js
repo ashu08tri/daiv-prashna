@@ -5,18 +5,18 @@ dotenv.config();
 
 const SHEET_ID = process.env.GOOGLE_SHEET_ID;
 
-const headers = [
+export const headers = [
   "Email", "Name", "Phone No", "Place", "Reason", "Country",
-  "Date", "Appointment Date", "Time", "Gender", "Nationality", "Organization",
+  "Date (dd/mm/yyyy)", "Appointment Date (dd/mm/yyyy)", "Time", "Gender", "Nationality", "Organization",
   "Yoga Type", "Vastu Type", "Pooja Type", "Astrology Type", "Shraddha Type",
   "Astrology Amount", "Yoga Amount", "Vastu Amount", "Pooja Amount", "Shraddha Amount",
-  "Paid"
+  "Paid","ID"
 ];
 
 let sheets;
 let headerEnsured = false;
 
-async function setupSheets() {
+export async function setupSheets() {
   if (!sheets) {
     const credentialsJSON = JSON.parse(
       Buffer.from(process.env.GOOGLE_CREDENTIALS_BASE64, 'base64').toString('utf8')

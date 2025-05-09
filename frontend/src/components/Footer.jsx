@@ -15,13 +15,13 @@ const { t } = useTranslation();
       <div className="mx-auto w-full max-w-screen-xl">
         <div className="grid grid-cols-2 gap-8 px-4 py-6 lg:py-8 md:grid-cols-4">
           <div>
-            <h2 className="mb-6 text-sm text-custom-yellow uppercase font-bold">{t("footer.helpCenter","Help center  ")}</h2>
+            <h2 className="mb-6 text-sm text-custom-yellow uppercase font-bold">Help Center</h2>
             <ul className="text-custom-ivory dark:text-custom-ivory font-medium">
               <li>
-                <a href="/contact_us" className="hover:underline">{t("footer.contactUs","Contact Us")}</a>
+                <a href="/contact_us" className="hover:underline">Contact Us</a>
               </li>
               <li className='my-2'>
-                <a href="/founder" className="hover:underline">{t("founders","Founder")}</a>
+                <a href="/founder" className="hover:underline">Founder</a>
               </li>
               <li>
                 {token ? (
@@ -38,19 +38,19 @@ const { t } = useTranslation();
             </ul>
           </div>
           <div>
-            <h2 className="mb-6 text-sm text-custom-yellow uppercase font-bold">{t("footer.legal","Legal")}</h2>
+            <h2 className="mb-6 text-sm text-custom-yellow uppercase font-bold">Legal</h2>
             <ul className="text-custom-ivory dark:text-custom-ivory font-medium">
               <li className="mb-4">
-                <a href="/privacy_policy" className="hover:underline">{t("footer.privacyPolicy","Privacy Policy")}</a>
+                <a href="/privacy_policy" className="hover:underline">Privacy Policy</a>
               </li>
               <li className="mb-4">
-                <a href="/privacy_policy#term" className="hover:underline">{t("footer.termsAndCondition","Terms &amp; Conditions")}</a>
+                <a href="/privacy_policy#term" className="hover:underline">Terms & Conditions</a>
               </li>
               <li className="mb-4">
-                <a href="/return_refund" className="hover:underline">{t("footer.ReturnAndfound","Return &amp; Refund")}</a>
+                <a href="/return_refund" className="hover:underline">Return & Refund</a>
               </li>
               <li className="mb-4">
-                <a href="/shipping" className="hover:underline">{t("footer.shoppingPolicy","Shipping Policy")}</a>
+                <a href="/shipping" className="hover:underline">Shipping Policy</a>
               </li>
             </ul>
           </div>

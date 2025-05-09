@@ -8,8 +8,9 @@ import cors from 'cors';
 import multer from "multer";
 import fs from "fs";
 import path from "path";
+import { google } from 'googleapis';
 import jwt from "jsonwebtoken";
-import { appendToSheet } from './utils/googleSheet.js';
+import { appendToSheet, setupSheets, headers } from './utils/googleSheet.js';
 import { Testimonial, Media, Article, Service, Customer } from "./modal/schema.js";
 
 config();
@@ -120,7 +121,7 @@ app.get("/services", async (req, res) => {
   
     const total = await Service.countDocuments();
     const services = await Service.find()
-      .sort({ createdAt: -1 }) // sort by latest
+      .sort({ createdAt: -1 }) 
       .skip(skip)
       .limit(limit);
   
@@ -209,7 +210,7 @@ app.post('/send-email', async (req, res) => {
             if (!date) return 'N/A';
             const d = new Date(date);
             const day = String(d.getDate()).padStart(2, '0');
-            const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+            const month = String(d.getMonth() + 1).padStart(2, '0'); 
             const year = d.getFullYear();
             return `${day}/${month}/${year}`;
         }
@@ -238,6 +239,7 @@ app.post('/send-email', async (req, res) => {
             format(newService.poojaAmount),
             format(newService.shraddhaAmount),
             'No',
+            format(newService._id)
         ];
 
         await appendToSheet(row);
@@ -266,6 +268,98 @@ app.post('/send-email', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+//sync google sheet
+
+app.get('/sync', async (req, res) => {
+    try {
+      await setupSheets();
+  
+      const SHEET_ID = process.env.GOOGLE_SHEET_ID;
+  
+      const sheets = google.sheets({ version: 'v4', auth: await new google.auth.GoogleAuth({
+        credentials: JSON.parse(Buffer.from(process.env.GOOGLE_CREDENTIALS_BASE64, 'base64').toString('utf8')),
+        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+      }).getClient() });
+  
+      
+      const existingSheetDataRes = await sheets.spreadsheets.values.get({
+        spreadsheetId: SHEET_ID,
+        range: 'Sheet1!A2:Z', 
+      });
+  
+      const existingRows = existingSheetDataRes.data.values || [];
+      const existingIds = new Set(existingRows.map(row => row[23])); 
+  
+      // Fetch all from DB
+      const allServices = await Service.find().lean();
+  
+      const format = (v) => v == null || v === '' ? 'N/A' : v;
+  
+      function formatDate(date) {
+        if (!date) return 'N/A';
+        const d = new Date(date);
+        const day = String(d.getDate()).padStart(2, '0');
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const year = d.getFullYear();
+        return `${day}/${month}/${year}`;
+      }
+  
+      const newRows = [];
+  
+      for (const s of allServices) {
+        if (!existingIds.has(s._id.toString())) {
+          const row = [
+            format(s.email),
+            format(s.name),
+            format(s.phoneNo),
+            format(s.place),
+            format(s.reason),
+            format(s.country),
+            format(formatDate(s.date)),
+            format(formatDate(s.appDate)),
+            format(s.time),
+            format(s.gender),
+            format(s.nationality),
+            format(s.organization),
+            format(s.yogaType),
+            format(s.vastuType),
+            format(s.poojaType),
+            format(s.astrologyType),
+            format(s.shraddhaType),
+            format(s.astroAmount),
+            format(s.yogaAmount),
+            format(s.vastuAmount),
+            format(s.poojaAmount),
+            format(s.shraddhaAmount),
+            'No',
+            format(s._id),
+          ];
+  
+          newRows.push(row);
+        }
+      }
+  
+      // Append if there are new ones
+      if (newRows.length > 0) {
+        await sheets.spreadsheets.values.append({
+          spreadsheetId: SHEET_ID,
+          range: 'Sheet1!A1',
+          valueInputOption: 'USER_ENTERED',
+          requestBody: { values: newRows },
+        });
+      }
+  
+      res.json({
+        updatedCount: newRows.length,
+        message: newRows.length > 0 ? `${newRows.length} records synced.` : 'All records are already up to date.',
+      });
+  
+    } catch (error) {
+      console.error('Error syncing to sheet:', error);
+      res.status(500).json({ error: 'Failed to sync data to Google Sheet' });
+    }
+  });
 
 // Create Testimonial
 app.post("/testimonials", authenticateToken, upload.single("image"), async (req, res) => {

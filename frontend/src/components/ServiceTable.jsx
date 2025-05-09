@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import ServiceRow from "./ServiceRow";
+import {toast, Toaster} from "sonner";
 
 const ServiceTable = () => {
   const [services, setServices] = useState([]);
@@ -9,7 +10,7 @@ const ServiceTable = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const fetchServices = (page = 1) => {
-    axios.get(`https://daiv-prashna.onrender.com?page=${page}`)
+    axios.get(`https://daiv-prashna.onrender.com/services?page=${page}`)
       .then(res => {
         setServices(res.data.services);
         setTotalPages(res.data.totalPages);
@@ -18,17 +19,25 @@ const ServiceTable = () => {
       .catch(err => console.error(err));
   };
 
+const handleSync = async() => {
+  let res = await fetch('https://daiv-prashna.onrender.com/sync');
+  res = await res.json();
+  toast.success(res.message);
+}
+
   useEffect(() => {
     fetchServices(currentPage);
   }, [currentPage]);
 
   return (
     <div className="p-6 h-full">
+      <Toaster richColors={true} position="bottom-right" visibleToasts={1} />
       <div className="flex items-center mb-6 gap-8">
         <h2 className="text-3xl font-semibold text-custom-maroon">Service List</h2>
         <a href='https://docs.google.com/spreadsheets/d/1i4kW6Yc4e7qRIxmwliksDx7yNMGScVV1-g5-gvwrEqc/edit?gid=0#gid=0'
-          className="px-3 py-1 border-none text-white bg-custom-maroon rounded-lg"
+          className="px-3 py-1 border-none text-white bg-custom-maroon rounded-lg active:scale-90"
         >Open in sheet</a>
+        <button onClick={handleSync} className="px-3 py-1 border-none text-white bg-custom-maroon rounded-lg active:scale-90">Sync Data</button>
       </div>
       <motion.div
         className="overflow-x-auto bg-white shadow-lg rounded-lg"

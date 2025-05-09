@@ -1,9 +1,7 @@
-
 import React, { useRef, useEffect, useState } from "react";
 import axios from "axios";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Container from "../components/Container";
-import logo from "../assets/images/logo.png";
 import namaste from "../assets/images/namaste.jpg";
 
 function Payment() {
@@ -13,7 +11,6 @@ function Payment() {
   const [email, setEmail] = useState("");
   const [phonenNumber, setphonenNumber] = useState("");
   const [services, setServices] = useState([]);
-  const [reload, setReload] = useState(false);
   const [sreload, setSreload] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const [removeReload, setRemoveReload] = useState(false);
@@ -62,34 +59,37 @@ function Payment() {
     getData();
 
     //  event listener
-  const handleServiceUpdate = () => {
-    getData(); // reload services from localStorage
-  };
-  // Adding event listener
-  window.addEventListener('servicesUpdated', handleServiceUpdate);
-   // Cleanup function
-   return () => {
-    window.removeEventListener('servicesUpdated', handleServiceUpdate);
-  };
+    const handleServiceUpdate = () => {
+      getData(); // reload services from localStorage
+    };
+    // Adding event listener
+    window.addEventListener('servicesUpdated', handleServiceUpdate);
+    // Cleanup function
+    return () => {
+      window.removeEventListener('servicesUpdated', handleServiceUpdate);
+    };
 
   }, [removeReload]);
 
   const calculateTotalAmount = (services) => {
     const total = services.reduce((acc, service) => {
-      const amounts = [
-        "astroAmount",
-        "yogaAmount",
-        "vastuAmount",
-        "poojaAmount",
+      const totalAmounts = [
+        "poojaTotalAmount",
+        "astroTotalAmount",
+        "vastuTotalAmount",
+        "yogaTotalAmount"
       ];
-      const serviceTotal = amounts.reduce((sum, amountType) => {
-        const amount = parseFloat(service[amountType]) || 0;
+      const serviceTotal = totalAmounts.reduce((sum, key) => {
+        const amount = parseFloat(service[key]) || 0;
         return sum + amount;
       }, 0);
       return acc + serviceTotal;
     }, 0);
+  
     setTotalAmount(total);
   };
+  
+  
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -184,7 +184,7 @@ function Payment() {
     let countKey;
     let amountKey;
     let unitAmount;
-  
+
     if (service.poojaType !== "") {
       updatedCount = poojaCount + 1;
       setpoojaCount(updatedCount);
@@ -210,9 +210,9 @@ function Payment() {
       amountKey = "yogaTotalAmount";
       unitAmount = service.yogaAmount;
     }
-  
+
     let storedServices = JSON.parse(localStorage.getItem("userServiceData")) || [];
-  
+
     const updatedServices = storedServices.map(item => {
       if (item.id === service.id) {
         return {
@@ -223,9 +223,10 @@ function Payment() {
       }
       return item;
     });
-  
+
     localStorage.setItem("userServiceData", JSON.stringify(updatedServices));
-    console.log(updatedServices.find(item => item.id === service.id));
+    calculateTotalAmount(updatedServices);
+
   };
 
   const handleDecrement = (service) => {
@@ -234,52 +235,52 @@ function Payment() {
     let amountKey;
     let unitAmount;
 
-  if (service.poojaType !== "") {
-    if (poojaCount <= 1) return;
-    updatedCount = poojaCount - 1;
-    setpoojaCount(updatedCount);
-    countKey = "poojaCount";
-    amountKey = "poojaTotalAmount";
-    unitAmount = service.poojaAmount;
-  } else if (service.astrologyType !== "") {
-    if (astroCount <= 1) return;
-    updatedCount = astroCount - 1;
+    if (service.poojaType !== "") {
+      if (poojaCount <= 1) return;
+      updatedCount = poojaCount - 1;
+      setpoojaCount(updatedCount);
+      countKey = "poojaCount";
+      amountKey = "poojaTotalAmount";
+      unitAmount = service.poojaAmount;
+    } else if (service.astrologyType !== "") {
+      if (astroCount <= 1) return;
+      updatedCount = astroCount - 1;
       setastroCount(updatedCount);
       countKey = "astroCount";
       amountKey = "astroTotalAmount";
       unitAmount = service.astroAmount;
-  } else if (service.vastuType !== "") {
-    if (vastuCount <= 1) return;
-    updatedCount = vastuCount - 1;
-    setvastuCount(updatedCount);
-    countKey = "vastuCount";
-    amountKey = "vastuTotalAmount";
-    unitAmount = service.vastuAmount;
-  } else {
-    if (yogaCount <= 1) return;
-    updatedCount = yogaCount - 1;
-    setyogaCount(updatedCount);
-    countKey = "yogaCount";
-    amountKey = "yogaTotalAmount";
-    unitAmount = service.yogaAmount;
-  }
-
-  let storedServices = JSON.parse(localStorage.getItem("userServiceData")) || [];
-
-  const updatedServices = storedServices.map(item => {
-    if (item.id === service.id) {
-      return {
-        ...item,
-        [countKey]: updatedCount,
-        [amountKey]: updatedCount * unitAmount
-      };
+    } else if (service.vastuType !== "") {
+      if (vastuCount <= 1) return;
+      updatedCount = vastuCount - 1;
+      setvastuCount(updatedCount);
+      countKey = "vastuCount";
+      amountKey = "vastuTotalAmount";
+      unitAmount = service.vastuAmount;
+    } else {
+      if (yogaCount <= 1) return;
+      updatedCount = yogaCount - 1;
+      setyogaCount(updatedCount);
+      countKey = "yogaCount";
+      amountKey = "yogaTotalAmount";
+      unitAmount = service.yogaAmount;
     }
-    return item;
-  });
 
-  localStorage.setItem("userServiceData", JSON.stringify(updatedServices));
-  console.log(updatedServices.find(item => item.id === service.id));
-};
+    let storedServices = JSON.parse(localStorage.getItem("userServiceData")) || [];
+
+    const updatedServices = storedServices.map(item => {
+      if (item.id === service.id) {
+        return {
+          ...item,
+          [countKey]: updatedCount,
+          [amountKey]: updatedCount * unitAmount
+        };
+      }
+      return item;
+    });
+
+    localStorage.setItem("userServiceData", JSON.stringify(updatedServices));
+    calculateTotalAmount(updatedServices);
+  };
 
   useEffect(() => {
     const getData = () => {
@@ -294,7 +295,7 @@ function Payment() {
     };
 
     getData();
-  }, [poojaCount,astroCount,vastuCount,yogaCount]);
+  }, [poojaCount, astroCount, vastuCount, yogaCount]);
 
 
   return (
@@ -352,15 +353,15 @@ function Payment() {
                       <div className="block py-3">
                         <div className="flex justify-between">
                           <h3 className="text-2xl font-semibold text-custom-maroon">
-                            Pooja Service 
+                            Pooja Service
                           </h3>
 
-                        {/* add and delete */}
-                        <div className="flex rounded-xl bg-custom-maroon text-white">
-                        <p className=" p-2 font-semibold cursor-pointer" onClick={()=>handleDecrement(service)}>-</p>
-                        <p className=" p-2 font-semibold">{service.poojaCount || poojaCount}</p>
-                        <p className=" p-2 font-semibold cursor-pointer" onClick={()=>handleIncrement(service)}>+</p>
-                        </div>
+                          {/* add and delete */}
+                          <div className="flex rounded-xl bg-custom-maroon text-white">
+                            <p className=" p-2 font-semibold cursor-pointer" onClick={() => handleDecrement(service)}>-</p>
+                            <p className=" p-2 font-semibold">{service.poojaCount || poojaCount}</p>
+                            <p className=" p-2 font-semibold cursor-pointer" onClick={() => handleIncrement(service)}>+</p>
+                          </div>
 
                           <button
                             type="button"
@@ -426,10 +427,10 @@ function Payment() {
 
                           {/* add and delete */}
                           <div className="flex rounded-xl bg-custom-maroon text-white">
-                        <p className=" p-2 font-semibold cursor-pointer" onClick={()=>handleDecrement(service)}>-</p>
-                        <p className=" p-2 font-semibold">{service.yogaCount ||yogaCount}</p>
-                        <p className=" p-2 font-semibold cursor-pointer" onClick={()=>handleIncrement(service)}>+</p>
-                        </div>
+                            <p className=" p-2 font-semibold cursor-pointer" onClick={() => handleDecrement(service)}>-</p>
+                            <p className=" p-2 font-semibold">{service.yogaCount || yogaCount}</p>
+                            <p className=" p-2 font-semibold cursor-pointer" onClick={() => handleIncrement(service)}>+</p>
+                          </div>
 
                           <button
                             type="button"
@@ -504,10 +505,10 @@ function Payment() {
 
                           {/* add and delete */}
                           <div className="flex rounded-xl bg-custom-maroon text-white">
-                        <p className=" p-2 font-semibold cursor-pointer" onClick={()=>handleDecrement(service)}>-</p>
-                        <p className=" p-2 font-semibold">{service.vastuCount || vastuCount}</p>
-                        <p className=" p-2 font-semibold cursor-pointer" onClick={()=>handleIncrement(service)}>+</p>
-                        </div>
+                            <p className=" p-2 font-semibold cursor-pointer" onClick={() => handleDecrement(service)}>-</p>
+                            <p className=" p-2 font-semibold">{service.vastuCount || vastuCount}</p>
+                            <p className=" p-2 font-semibold cursor-pointer" onClick={() => handleIncrement(service)}>+</p>
+                          </div>
 
                           <button
                             type="button"
@@ -634,10 +635,10 @@ function Payment() {
 
                           {/* add and delete */}
                           <div className="flex rounded-xl bg-custom-maroon text-white">
-                        <p className=" p-2 font-semibold cursor-pointer" onClick={()=>handleDecrement(service)}>-</p>
-                        <p className=" p-2 font-semibold">{service.astroCount ||astroCount}</p>
-                        <p className=" p-2 font-semibold cursor-pointer" onClick={()=>handleIncrement(service)}>+</p>
-                        </div>
+                            <p className=" p-2 font-semibold cursor-pointer" onClick={() => handleDecrement(service)}>-</p>
+                            <p className=" p-2 font-semibold">{service.astroCount || astroCount}</p>
+                            <p className=" p-2 font-semibold cursor-pointer" onClick={() => handleIncrement(service)}>+</p>
+                          </div>
 
                           <button
                             type="button"
