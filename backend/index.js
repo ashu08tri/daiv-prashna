@@ -201,48 +201,50 @@ app.post('/send-email', async (req, res) => {
             return res.status(400).json({ error: "Missing required fields" });
         }
 
-        const newService = new Service({ email: to, phoneNo: phoneNo, totalAmount: totalAmount, ...services[0] });
-        await newService.save();
-
-        const format = (v) => v == null || v === '' ? 'N/A' : v;
-
-        function formatDate(date) {
-            if (!date) return 'N/A';
-            const d = new Date(date);
-            const day = String(d.getDate()).padStart(2, '0');
-            const month = String(d.getMonth() + 1).padStart(2, '0'); 
-            const year = d.getFullYear();
-            return `${day}/${month}/${year}`;
-        }
-
-        const row = [
-            format(newService.email),
-            format(newService.name),
-            format(newService.phoneNo),
-            format(newService.place),
-            format(newService.reason),
-            format(newService.country),
-            format(formatDate(newService.date)),
-            format(formatDate(newService.appDate)),
-            format(newService.time),
-            format(newService.gender),
-            format(newService.nationality),
-            format(newService.organization),
-            format(newService.yogaType),
-            format(newService.vastuType),
-            format(newService.poojaType),
-            format(newService.astrologyType),
-            format(newService.shraddhaType),
-            format(newService.astroAmount),
-            format(newService.yogaAmount),
-            format(newService.vastuAmount),
-            format(newService.poojaAmount),
-            format(newService.shraddhaAmount),
-            'No',
-            format(newService._id)
-        ];
-
-        await appendToSheet(row);
+        for (let service of services) {
+            const newService = new Service({ email: to, phoneNo, totalAmount, ...service });
+            await newService.save();
+          
+            const format = (v) => v == null || v === '' ? 'N/A' : v;
+            const formatDate = (date) => {
+              if (!date) return 'N/A';
+              const d = new Date(date);
+              const day = String(d.getDate()).padStart(2, '0');
+              const month = String(d.getMonth() + 1).padStart(2, '0');
+              const year = d.getFullYear();
+              return `${day}/${month}/${year}`;
+            };
+          
+            const row = [
+              format(newService.email),
+              format(newService.name),
+              format(newService.phoneNo),
+              format(newService.place),
+              format(newService.reason),
+              format(newService.country),
+              format(formatDate(newService.date)),
+              format(formatDate(newService.appDate)),
+              format(newService.time),
+              format(newService.gender),
+              format(newService.nationality),
+              format(newService.organization),
+              format(newService.yogaType),
+              format(newService.vastuType),
+              format(newService.poojaType),
+              format(newService.astrologyType),
+              format(newService.shraddhaType),
+              format(newService.astroAmount),
+              format(newService.yogaAmount),
+              format(newService.vastuAmount),
+              format(newService.poojaAmount),
+              format(newService.shraddhaAmount),
+              'No',
+              format(newService._id)
+            ];
+          
+            await appendToSheet(row);
+          }
+          
 
         // Send Email
         const transporter = nodemailer.createTransport({
