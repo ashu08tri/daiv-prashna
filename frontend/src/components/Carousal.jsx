@@ -38,7 +38,7 @@ const {t} =  useTranslation()
           {t("carousal.MainTitle", "Our Services")}
         </h1>
         <div className="h-full w-[calc(90vw)] pl-2 flex justify-center">
-          <div className="w-[calc(90%)] md:w-full">
+          <div className="w-[calc(90%)] md:w-full z-10">
             <Carousel
               responsive={responsive}
               infinite={true}

@@ -109,7 +109,7 @@ const Navbar = () => {
   return (
     <>
       <nav className="h-24 md:h-36 bg-custom-maroon p-4 border-b border-custom-yellow-dark">
-        <div className="h-full container mx-auto flex justify-between items-center">
+        <div className="h-full flex justify-between items-center">
           <div className="flex justify-center w-full md:w-2/12">
             <Link to="/" onClick={handleLinkClick}>
               <img src={logo} alt="logo" className="w-40 md:w-full" />
@@ -164,25 +164,25 @@ const Navbar = () => {
             </button>
           </div>
 
-          <div>
+          {/* Book Appointment Section (UNCHANGED) */}
+          <div className="hidden relative w-2/12 md:flex gap-3 justify-center">
+           <div className="bg-custom-yellow flex justify-center items-center text-white p-1 rounded-md">
             <button
               onClick={toggleLanguage}
-              className="border border-pink-300 text-white px-3 py-1 rounded text-xs hover:bg-pink-300 hover:text-[#1e1b2e] transition-all"
+              className="flex w-full bg-custom-maroon text-white p-3 rounded-md active:scale-95"
             >
               {i18n.language === "en" ? "हिन्दी" : "English"}
             </button>
           </div>
-
-          {/* Book Appointment Section (UNCHANGED) */}
-          <div className="hidden relative w-2/12 md:flex justify-center">
             <button
               className="bg-custom-yellow text-white p-1 rounded-md"
               onClick={appointmentHandler}
             >
               <span className="flex w-full bg-custom-maroon text-white p-3 rounded-md active:scale-95">
-                {t("navbar.button.title", "Book Appointment")}
+                Book
               </span>
             </button>
+           
             <AnimatePresence>
               {appointment && <ServiceList onClose={appointmentHandler} />}
             </AnimatePresence>
@@ -259,7 +259,7 @@ const Navbar = () => {
             exit={{ opacity: 0, scale: 0.8 }}
             className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50"
           >
-            <div className="bg-white p-6 rounded-lg w-96">
+            <div className="text-custom-yellow bg-custom-maroon border-t border-custom-yellow border-b p-6 rounded-lg w-96">
               <h2 className="text-xl font-bold text-center mb-4">
                 {t(
                   "navbar.prashadCorner.info.title",

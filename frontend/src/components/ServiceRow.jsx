@@ -30,28 +30,63 @@ const ServiceRow = ({ service, setServices, id }) => {
 
 
   return (
-    <motion.tr className="border-b bg-custom-ivory" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
-      <td className="p-3">{name}</td>
-      <td className="p-3">{serviceType}</td>
-      <td className="p-3">
-        {new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
-      <td className="p-3">{time.length > 0 ? time : "N/A"}</td>
-      <td className="p-3">{email}</td>
-      <td className="p-3">₹{amount}</td>
-      <td className="p-3">
-        <button
-          onClick={togglePaid}
-          className={`px-3 py-1 rounded-full ${paid ? "bg-green-500 text-white" : "bg-red-500 text-white"}`}
-        >
-          {paid ? "Paid" : "Unpaid"}
-        </button>
-      </td>
-      <td className="p-3">
-        <button onClick={deleteService} className="bg-gray-200 px-3 py-1 rounded hover:bg-red-500 hover:text-white">
-          Delete
-        </button>
-      </td>
-    </motion.tr>
+    <motion.tr
+  className="border-b bg-custom-ivory"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.3 }}
+>
+  <td className="p-3">{name}</td>
+  <td className="p-3">{serviceType}</td>
+
+  {/* Date column */}
+  <td className="p-3">
+    {serviceType.toLowerCase() === "astrology for the underpriveledge" || serviceType.toLowerCase() === "new horoscope" ||
+    serviceType.toLowerCase() === "existing horoscope analysis" || serviceType.toLowerCase() === "diesease releated consultancy"
+      ? "N/A"
+      : new Date(date).toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        })}
+  </td>
+
+  {/* DOB column */}
+  <td className="p-3">
+    {serviceType.toLowerCase() === "astrology for the underpriveledge" || serviceType.toLowerCase() === "new horoscope" ||
+    serviceType.toLowerCase() === "existing horoscope analysis" || serviceType.toLowerCase() === "diesease releated consultancy"
+      ? new Date(date).toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        })
+      : "N/A"}
+  </td>
+
+  <td className="p-3">{time.length > 0 ? time : "N/A"}</td>
+  <td className="p-3">{email}</td>
+  <td className="p-3">₹{amount}</td>
+
+  <td className="p-3">
+    <button
+      onClick={togglePaid}
+      className={`px-3 py-1 rounded-full ${
+        paid ? "bg-green-500 text-white" : "bg-red-500 text-white"
+      }`}
+    >
+      {paid ? "Paid" : "Unpaid"}
+    </button>
+  </td>
+
+  <td className="p-3">
+    <button
+      onClick={deleteService}
+      className="bg-gray-200 px-3 py-1 rounded hover:bg-red-500 hover:text-white"
+    >
+      Delete
+    </button>
+  </td>
+</motion.tr>
   );
 };
 

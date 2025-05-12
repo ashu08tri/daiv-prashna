@@ -15,6 +15,11 @@ function Payment() {
   const [emailSent, setEmailSent] = useState(false);
   const [removeReload, setRemoveReload] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [poojaCount, setpoojaCount] = useState(1);
+  const [astroCount, setastroCount] = useState(1);
+  const [vastuCount, setvastuCount] = useState(1);
+  const [yogaCount, setyogaCount] = useState(1);
+
 
 
   const removeHandler = (id) => {
@@ -71,55 +76,54 @@ function Payment() {
 
   }, [removeReload]);
 
+
   const calculateTotalAmount = (services) => {
     const total = services.reduce((acc, service) => {
-      const totalAmounts = [
-        "poojaTotalAmount",
-        "astroTotalAmount",
-        "vastuTotalAmount",
-        "yogaTotalAmount"
-      ];
-      const serviceTotal = totalAmounts.reduce((sum, key) => {
-        const amount = parseFloat(service[key]) || 0;
-        return sum + amount;
-      }, 0);
-      return acc + serviceTotal;
+      const pooja = (service.poojaTotalAmount ?? (service.poojaAmount * (service.poojaCount || 1))) || 0;
+      const astro = (service.astroTotalAmount ?? (service.astroAmount * (service.astroCount || 1))) || 0;
+      const vastu = (service.vastuTotalAmount ?? (service.vastuAmount * (service.vastuCount || 1))) || 0;
+      const yoga = (service.yogaTotalAmount ?? (service.yogaAmount * (service.yogaCount || 1))) || 0;
+  
+      return acc + pooja + astro + vastu + yoga;
     }, 0);
   
     setTotalAmount(total);
   };
   
   
-
   const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
+  
     try {
-      let storedServices =
-        JSON.parse(localStorage.getItem("userServiceData")) || [];
-      console.log(storedServices);
+      let storedServices = JSON.parse(localStorage.getItem("userServiceData")) || [];
+  
       if (!storedServices.length) {
         alert("No services found!");
         return;
       }
-
-      // Extract details from the first service
-      const {
-        name,
-        astroTotalAmount,
-        yogaTotalAmount,
-        vastuTotalAmount,
-        poojaTotalAmount,
-        shraddhaType,
-      } = storedServices[0];
-      const totalAmount =
-        (astroTotalAmount || 0) +
-        (yogaTotalAmount || 0) +
-        (vastuTotalAmount || 0) +
-        (poojaTotalAmount || 0);
-
-      // Format service details
-      let serviceDetails = storedServices
+  
+      // Add phone number to all services
+      storedServices = storedServices.map(service => ({
+        ...service,
+        phoneNo: phonenNumber
+      }));
+  
+      localStorage.setItem("userServiceData", JSON.stringify(storedServices));
+  
+      // Compute total amount from all services
+      const totalAmount = storedServices.reduce((acc, service) => {
+        return (
+          acc +
+          (service.astroTotalAmount || 0) +
+          (service.yogaTotalAmount || 0) +
+          (service.vastuTotalAmount || 0) +
+          (service.poojaTotalAmount || 0)
+        );
+      }, 0);
+  
+      // Extract all types from all services
+      const serviceDetails = storedServices
         .map(
           (service) =>
             service.shraddhaType ||
@@ -128,174 +132,126 @@ function Payment() {
             service.poojaType ||
             service.astrologyType
         )
-        .filter(Boolean) // Remove undefined values
+        .filter(Boolean)
         .join(", ");
-
-      //adding phone no done by me
-      storedServices.forEach((user) => {
-        user.phoneNo = phonenNumber;
-      });
-      localStorage.setItem("userServiceData", JSON.stringify(storedServices));
-      console.log(
-        "this is update serive data",
-        JSON.parse(localStorage.getItem("userServiceData"))
-      );
-
-      // Email content
-      let emailData = {
+  
+      // Use the first service just to get the user's name
+      const { name } = storedServices[0];
+  
+      const emailData = {
         to: email,
         subject: "Payment Request for Daiv-Prashna Service",
         text: `Dear ${name},\n\nWe hope you're well. This is a reminder regarding the payment for the Daiv-Prashna service you have requested.\n\nAmount Due: ₹${totalAmount}\nServices: ${serviceDetails}\n\nBank Details:\nAccount No - 623801535116\nName - ALOK ANANDKUMAR TRIPATHI\nIFSC code - ICIC0006238\n\nOnce the payment is received, we will send a confirmation email and proceed with scheduling your appointment.\n\nThank you for your prompt attention.\n\nBest regards,\nDaiv-Prashna.in\nMob: +91-9930005234`,
-        services,
+        services: storedServices,
         phoneNo: phonenNumber,
         totalAmount
       };
-
-      // Send email via backend
-      let emailResponse = await axios.post(
+  
+      const emailResponse = await axios.post(
         "https://daiv-prashna.onrender.com/send-email",
         emailData
       );
-
+  
       if (emailResponse.data.success) {
         localStorage.removeItem("userServiceData");
-        setEmailSent(true); // ✅ Show the success message
+        setEmailSent(true);
       } else {
         console.log("Email sending failed:", emailResponse.data.error);
       }
-      // Reload state after a delay
+  
       setTimeout(() => {
         setSreload(!sreload);
       }, 1000);
+  
     } catch (error) {
       console.error("Error in submitHandler:", error);
     } finally {
       setLoading(false);
     }
   };
-
-  const [poojaCount, setpoojaCount] = useState(1);
-  const [astroCount, setastroCount] = useState(1);
-  const [vastuCount, setvastuCount] = useState(1);
-  const [yogaCount, setyogaCount] = useState(1);
+  
 
   const handleIncrement = (service) => {
-    let updatedCount;
-    let countKey;
-    let amountKey;
-    let unitAmount;
+    let countKey, amountKey, unitAmount;
 
     if (service.poojaType !== "") {
-      updatedCount = poojaCount + 1;
-      setpoojaCount(updatedCount);
       countKey = "poojaCount";
       amountKey = "poojaTotalAmount";
-      unitAmount = service.poojaAmount;
+      unitAmount = parseFloat(service.poojaAmount);
     } else if (service.astrologyType !== "") {
-      updatedCount = astroCount + 1;
-      setastroCount(updatedCount);
       countKey = "astroCount";
       amountKey = "astroTotalAmount";
-      unitAmount = service.astroAmount;
+      unitAmount = parseFloat(service.astroAmount);
     } else if (service.vastuType !== "") {
-      updatedCount = vastuCount + 1;
-      setvastuCount(updatedCount);
       countKey = "vastuCount";
       amountKey = "vastuTotalAmount";
-      unitAmount = service.vastuAmount;
+      unitAmount = parseFloat(service.vastuAmount);
     } else {
-      updatedCount = yogaCount + 1;
-      setyogaCount(updatedCount);
       countKey = "yogaCount";
       amountKey = "yogaTotalAmount";
-      unitAmount = service.yogaAmount;
+      unitAmount = parseFloat(service.yogaAmount);
     }
 
-    let storedServices = JSON.parse(localStorage.getItem("userServiceData")) || [];
+    const storedServices = JSON.parse(localStorage.getItem("userServiceData")) || [];
 
     const updatedServices = storedServices.map(item => {
       if (item.id === service.id) {
+        const currentCount = item[countKey] || 1;
+        const newCount = currentCount + 1;
         return {
           ...item,
-          [countKey]: updatedCount,
-          [amountKey]: updatedCount * unitAmount
+          [countKey]: newCount,
+          [amountKey]: newCount * unitAmount
         };
       }
       return item;
     });
 
     localStorage.setItem("userServiceData", JSON.stringify(updatedServices));
-    calculateTotalAmount(updatedServices);
-
+    window.dispatchEvent(new Event("servicesUpdated"));
   };
+
 
   const handleDecrement = (service) => {
-    let updatedCount;
-    let countKey;
-    let amountKey;
-    let unitAmount;
+    let countKey, amountKey, unitAmount;
 
     if (service.poojaType !== "") {
-      if (poojaCount <= 1) return;
-      updatedCount = poojaCount - 1;
-      setpoojaCount(updatedCount);
       countKey = "poojaCount";
       amountKey = "poojaTotalAmount";
-      unitAmount = service.poojaAmount;
+      unitAmount = parseFloat(service.poojaAmount);
     } else if (service.astrologyType !== "") {
-      if (astroCount <= 1) return;
-      updatedCount = astroCount - 1;
-      setastroCount(updatedCount);
       countKey = "astroCount";
       amountKey = "astroTotalAmount";
-      unitAmount = service.astroAmount;
+      unitAmount = parseFloat(service.astroAmount);
     } else if (service.vastuType !== "") {
-      if (vastuCount <= 1) return;
-      updatedCount = vastuCount - 1;
-      setvastuCount(updatedCount);
       countKey = "vastuCount";
       amountKey = "vastuTotalAmount";
-      unitAmount = service.vastuAmount;
+      unitAmount = parseFloat(service.vastuAmount);
     } else {
-      if (yogaCount <= 1) return;
-      updatedCount = yogaCount - 1;
-      setyogaCount(updatedCount);
       countKey = "yogaCount";
       amountKey = "yogaTotalAmount";
-      unitAmount = service.yogaAmount;
+      unitAmount = parseFloat(service.yogaAmount);
     }
 
-    let storedServices = JSON.parse(localStorage.getItem("userServiceData")) || [];
+    const storedServices = JSON.parse(localStorage.getItem("userServiceData")) || [];
 
     const updatedServices = storedServices.map(item => {
       if (item.id === service.id) {
+        const currentCount = item[countKey] || 1;
+        const newCount = Math.max(currentCount - 1, 1);
         return {
           ...item,
-          [countKey]: updatedCount,
-          [amountKey]: updatedCount * unitAmount
+          [countKey]: newCount,
+          [amountKey]: newCount * unitAmount
         };
       }
       return item;
     });
 
     localStorage.setItem("userServiceData", JSON.stringify(updatedServices));
-    calculateTotalAmount(updatedServices);
+    window.dispatchEvent(new Event("servicesUpdated"));
   };
 
-  useEffect(() => {
-    const getData = () => {
-      try {
-        let storedServices =
-          JSON.parse(localStorage.getItem("userServiceData")) || [];
-        setServices(storedServices);
-        calculateTotalAmount(storedServices);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    getData();
-  }, [poojaCount, astroCount, vastuCount, yogaCount]);
 
 
   return (

@@ -51,6 +51,7 @@ const handleSync = async() => {
               <th className="p-3 text-left">Name</th>
               <th className="p-3 text-left">Service</th>
               <th className="p-3 text-left">Date</th>
+              <th className="p-3 text-left">DOB</th>
               <th className="p-3 text-left">Time</th>
               <th className="p-3 text-left">Email</th>
               <th className="p-3 text-left">Amount</th>
